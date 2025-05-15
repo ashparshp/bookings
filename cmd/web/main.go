@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ashparshp/bookings/pkg/handlers"
-	"github.com/ashparshp/bookings/pkg/render"
+	"github.com/ashparshp/bookings/internal/handlers"
+	"github.com/ashparshp/bookings/internal/render"
 
-	"github.com/ashparshp/bookings/pkg/config"
+	"github.com/ashparshp/bookings/internal/config"
 
 	"github.com/alexedwards/scs/v2"
 )

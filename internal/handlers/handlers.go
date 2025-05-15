@@ -1,11 +1,14 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/ashparshp/bookings/pkg/config"
-	"github.com/ashparshp/bookings/pkg/models"
-	"github.com/ashparshp/bookings/pkg/render"
+	"github.com/ashparshp/bookings/internal/config"
+	"github.com/ashparshp/bookings/internal/models"
+	"github.com/ashparshp/bookings/internal/render"
 )
 
 // Repo is the repository used by the handler
@@ -71,9 +74,32 @@ func (m *Repository) AvailabilityPage (w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "search-availability.page.tmpl", &models.TemplateData{})
 }
 
-// PostAvailabilityPage renders the room page
+// PostAvailabilityPage handles post
 func (m *Repository) PostAvailabilityPage (w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Availability Post"))
+	start := r.Form.Get("start")
+	end := r.Form.Get("end")
+	w.Write([]byte(fmt.Sprintf("Start date: %s, End date: %s", start, end)))
+}
+
+type jsonResponse struct {
+	OK      bool   `json:"ok"`
+	Message string `json:"message"`
+}
+
+// AvailabilityJSON handles request for availability and sends JSON response
+func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
+	resp := jsonResponse{
+		OK:      true,
+		Message: "Available!",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "     ")
+	if err != nil {
+		log.Println(err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
 }
 
 // ContactPage renders the room page
