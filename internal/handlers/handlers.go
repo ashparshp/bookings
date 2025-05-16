@@ -77,13 +77,12 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 	}
 
 	form := forms.New(r.PostForm)
-	
+
 	form.Has("first_name", r)
 
 	if !form.Valid() {
 		data := make(map[string]interface{})
 		data["reservation"] = reservation
-
 		render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 			Form: form,
 			Data: data,
