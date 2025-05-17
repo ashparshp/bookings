@@ -57,8 +57,13 @@ func (m *Repository) AboutPage (w http.ResponseWriter, r *http.Request) {
 
 // ReservationPage renders the make a reservation page and displays form
 func (m *Repository) ReservationPage (w http.ResponseWriter, r *http.Request) {
+	var emptyReservation models.Reservation
+	data := make(map[string]interface{})
+	data["reservation"] = emptyReservation
+
 	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
+		Data: data,
 	})
 }
 
@@ -78,7 +83,9 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 
 	form := forms.New(r.PostForm)
 
-	form.Has("first_name", r)
+	form.Required("first_name", "last_name", "email", "phone")
+	form.MinLength("first_name", 3, r)
+	form.IsEmail("email")
 
 	if !form.Valid() {
 		data := make(map[string]interface{})
@@ -89,6 +96,9 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 		})
 		return
 	}
+
+	m.App.Session.Put(r.Context(), "reservation", reservation)
+	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 }
 
 // GeneralsPage renders the room page
@@ -137,4 +147,21 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 // ContactPage renders the room page
 func (m *Repository) ContactPage (w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "contact.page.tmpl", &models.TemplateData{})
+}
+
+// ReservationSummaryPage renders the room page
+func (m *Repository) ReservationSummaryPage (w http.ResponseWriter, r *http.Request) {
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		log.Println("Cannot get item from session")
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["reservation"] = reservation
+
+
+	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 }
