@@ -24,6 +24,35 @@ func TestAddDefaultData(t *testing.T) {
 	}
 }
 
+func TestRenderTemplate(t *testing.T) {
+	pathToTemplates = "./../../templates"
+
+	tc, err := CreateTemplateCache()
+	if err != nil {
+		t.Error("failed to create template cache")
+	}
+
+	app.TemplateCache = tc
+
+	r, err := getSession()
+	if err != nil {
+		t.Error("failed to get session")
+	}
+
+	var ww myWriter
+
+	err = RenderTemplate(&ww, r, "home.page.tmpl", &models.TemplateData{})
+	if err != nil {
+		t.Error("failed to render template")
+	}
+
+	err = RenderTemplate(&ww, r, "non-existent.page.tmpl", &models.TemplateData{})
+	if err == nil {
+		t.Error("rendered non-existent template")
+	}
+	
+}
+
 func getSession() (*http.Request, error) {
 	r, err := http.NewRequest("GET", "/some-url", nil)
 
@@ -36,4 +65,16 @@ func getSession() (*http.Request, error) {
 	r = r.WithContext(ctx)
 	
 	return r, nil
+}
+
+func TestNewTemplates(t *testing.T) {
+	NewTemplates(app)
+}
+
+func TestCreateTemplateCache(t *testing.T) {
+	pathToTemplates = "./../../templates"
+	_, err := CreateTemplateCache()
+	if err != nil {
+		t.Error("failed to create template cache")
+	}
 }
