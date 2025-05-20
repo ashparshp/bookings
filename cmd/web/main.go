@@ -58,10 +58,10 @@ func run() error {
 	// change this to true when in production
 	app.InProduction = false
 
-	app.InfoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
 
-	app.ErrorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	app.ErrorLog = errorLog
 
 	session = scs.New()
