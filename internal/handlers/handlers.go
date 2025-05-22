@@ -6,10 +6,13 @@ import (
 	"net/http"
 
 	"github.com/ashparshp/bookings/internal/config"
+	"github.com/ashparshp/bookings/internal/driver"
 	"github.com/ashparshp/bookings/internal/forms"
 	"github.com/ashparshp/bookings/internal/helpers"
 	"github.com/ashparshp/bookings/internal/models"
 	"github.com/ashparshp/bookings/internal/render"
+	"github.com/ashparshp/bookings/internal/repository"
+	"github.com/ashparshp/bookings/internal/repository/dbrepo"
 )
 
 // Repo is the repository used by the handler
@@ -18,12 +21,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB repository.DatabaseRepo
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository {
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
@@ -34,13 +39,13 @@ func NewHandler(r * Repository) {
 
 // HomePage is the handler for the home page
 func (m *Repository) HomePage (w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
 // AboutPage is the handler for the about page
 func (m *Repository) AboutPage (w http.ResponseWriter, r *http.Request) {
 	// send the data to the template
-	render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "about.page.tmpl", &models.TemplateData{})
 }
 
 // ReservationPage renders the make a reservation page and displays form
@@ -49,7 +54,7 @@ func (m *Repository) ReservationPage (w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	data["reservation"] = emptyReservation
 
-	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+	render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
 		Data: data,
 	})
@@ -79,7 +84,7 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 	if !form.Valid() {
 		data := make(map[string]interface{})
 		data["reservation"] = reservation
-		render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 			Form: form,
 			Data: data,
 		})
@@ -92,17 +97,17 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 
 // GeneralsPage renders the room page
 func (m *Repository) GeneralsPage (w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "generals.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "generals.page.tmpl", &models.TemplateData{})
 }
 
 // MajorsPage renders the room page
 func (m *Repository) MajorsPage (w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "majors.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "majors.page.tmpl", &models.TemplateData{})
 }
 
 // AvailabilityPage renders the room page
 func (m *Repository) AvailabilityPage (w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "search-availability.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "search-availability.page.tmpl", &models.TemplateData{})
 }
 
 // PostAvailabilityPage handles post
@@ -136,7 +141,7 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 // ContactPage renders the room page
 func (m *Repository) ContactPage (w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "contact.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "contact.page.tmpl", &models.TemplateData{})
 }
 
 // ReservationSummaryPage renders the room page
@@ -154,7 +159,7 @@ func (m *Repository) ReservationSummaryPage (w http.ResponseWriter, r *http.Requ
 	data["reservation"] = reservation
 
 
-	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
+	render.Template(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
 		Data: data,
 	})
 }
