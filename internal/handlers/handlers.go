@@ -161,6 +161,31 @@ func (m *Repository) AvailabilityPage (w http.ResponseWriter, r *http.Request) {
 func (m *Repository) PostAvailabilityPage (w http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
+
+	layout := "2006-01-02"
+	startDate, err := time.Parse(layout, start)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	endDate, err := time.Parse(layout, end)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	rooms, err := m.DB.SearchAvailabilityForAllRooms(startDate, endDate)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	for _, i := range rooms {
+		m.App.InfoLog.Println("Room ID: ", i.ID)
+		m.App.InfoLog.Println("Room Name: ", i.RoomName)
+	}
+
 	w.Write([]byte(fmt.Sprintf("Start date: %s, End date: %s", start, end)))
 }
 
