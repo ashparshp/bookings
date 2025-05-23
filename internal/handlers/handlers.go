@@ -59,13 +59,21 @@ func (m *Repository) ReservationPage (w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	room, err := m.DB.GetRoomByID(res.RoomID)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	res.Room.RoomName = room.RoomName
+
 	sd := res.StartDate.Format("2006-01-02")
 	ed := res.EndDate.Format("2006-01-02")
 	
 	StringMap := (map[string]string{})
 	StringMap["start_date"] = sd
 	StringMap["end_date"] = ed
-	
+
 	data := make(map[string]interface{})
 	data["reservation"] = res
 
