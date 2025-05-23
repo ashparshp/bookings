@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -52,13 +53,26 @@ func (m *Repository) AboutPage (w http.ResponseWriter, r *http.Request) {
 
 // ReservationPage renders the make a reservation page and displays form
 func (m *Repository) ReservationPage (w http.ResponseWriter, r *http.Request) {
-	var emptyReservation models.Reservation
+	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		helpers.ServerError(w, errors.New("cannot get reservation from session"))
+		return
+	}
+
+	sd := res.StartDate.Format("2006-01-02")
+	ed := res.EndDate.Format("2006-01-02")
+	
+	StringMap := (map[string]string{})
+	StringMap["start_date"] = sd
+	StringMap["end_date"] = ed
+	
 	data := make(map[string]interface{})
-	data["reservation"] = emptyReservation
+	data["reservation"] = res
 
 	render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
 		Data: data,
+		StringMap: StringMap,
 	})
 }
 
@@ -259,9 +273,7 @@ func (m *Repository) ChooseRoomPage (w http.ResponseWriter, r *http.Request) {
 
 	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
-		m.App.ErrorLog.Println("Can't get reservation from session")
-		m.App.Session.Put(r.Context(), "error", "Cannot get reservation from session")
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		helpers.ServerError(w, err)
 		return
 	}
 
