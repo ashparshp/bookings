@@ -100,9 +100,12 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
-                        console.log(data.ok);
-                        console.log(data.message);
+                        if (data.ok) {
+                            console.log("ok");
+                        }
+                        else {
+                            console.log("not ok");
+                        }
                     })
             }
         });
