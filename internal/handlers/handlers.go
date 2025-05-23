@@ -14,6 +14,7 @@ import (
 	"github.com/ashparshp/bookings/internal/render"
 	"github.com/ashparshp/bookings/internal/repository"
 	"github.com/ashparshp/bookings/internal/repository/dbrepo"
+	"github.com/go-chi/chi/v5"
 )
 
 // Repo is the repository used by the handler
@@ -193,7 +194,7 @@ func (m *Repository) PostAvailabilityPage (w http.ResponseWriter, r *http.Reques
 		StartDate: startDate,
 		EndDate:   endDate,
 	}
-	
+
 	m.App.Session.Put(r.Context(), "reservation", res)
 
 	render.Template(w, r, "choose-room.page.tmpl", &models.TemplateData{
@@ -246,4 +247,26 @@ func (m *Repository) ReservationSummaryPage (w http.ResponseWriter, r *http.Requ
 	render.Template(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
 		Data: data,
 	})
+}
+
+// ChooseRoomPage renders the room page
+func (m *Repository) ChooseRoomPage (w http.ResponseWriter, r *http.Request) {
+	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		m.App.ErrorLog.Println("Can't get reservation from session")
+		m.App.Session.Put(r.Context(), "error", "Cannot get reservation from session")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	res.RoomID = roomID
+	m.App.Session.Put(r.Context(), "reservation", res)
+
+	http.Redirect(w, r, "/make-reservation", http.StatusSeeOther)
 }
