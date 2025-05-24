@@ -2,12 +2,12 @@ mode: set
 github.com/ashparshp/bookings/internal/handlers/handlers.go:31.62,36.2 1 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:39.51,44.2 1 1
 github.com/ashparshp/bookings/internal/handlers/handlers.go:47.33,49.2 1 1
-github.com/ashparshp/bookings/internal/handlers/handlers.go:52.72,54.2 1 0
-github.com/ashparshp/bookings/internal/handlers/handlers.go:57.73,60.2 1 0
+github.com/ashparshp/bookings/internal/handlers/handlers.go:52.72,54.2 1 1
+github.com/ashparshp/bookings/internal/handlers/handlers.go:57.73,60.2 1 1
 github.com/ashparshp/bookings/internal/handlers/handlers.go:63.79,65.9 2 1
 github.com/ashparshp/bookings/internal/handlers/handlers.go:65.9,69.3 3 1
 github.com/ashparshp/bookings/internal/handlers/handlers.go:71.2,72.16 2 1
-github.com/ashparshp/bookings/internal/handlers/handlers.go:72.16,76.3 3 0
+github.com/ashparshp/bookings/internal/handlers/handlers.go:72.16,76.3 3 1
 github.com/ashparshp/bookings/internal/handlers/handlers.go:78.2,96.4 10 1
 github.com/ashparshp/bookings/internal/handlers/handlers.go:100.83,103.9 2 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:103.9,106.3 2 0
@@ -20,9 +20,9 @@ github.com/ashparshp/bookings/internal/handlers/handlers.go:172.16,175.3 2 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:177.2,186.16 3 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:186.16,189.3 2 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:191.2,192.66 2 0
-github.com/ashparshp/bookings/internal/handlers/handlers.go:196.76,198.2 1 0
-github.com/ashparshp/bookings/internal/handlers/handlers.go:201.74,203.2 1 0
-github.com/ashparshp/bookings/internal/handlers/handlers.go:206.80,208.2 1 0
+github.com/ashparshp/bookings/internal/handlers/handlers.go:196.76,198.2 1 1
+github.com/ashparshp/bookings/internal/handlers/handlers.go:201.74,203.2 1 1
+github.com/ashparshp/bookings/internal/handlers/handlers.go:206.80,208.2 1 1
 github.com/ashparshp/bookings/internal/handlers/handlers.go:211.84,217.16 5 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:217.16,220.3 2 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:222.2,223.16 2 0
@@ -43,7 +43,7 @@ github.com/ashparshp/bookings/internal/handlers/handlers.go:287.16,290.3 2 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:292.2,301.16 3 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:301.16,304.3 2 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:306.2,307.14 2 0
-github.com/ashparshp/bookings/internal/handlers/handlers.go:311.75,313.2 1 0
+github.com/ashparshp/bookings/internal/handlers/handlers.go:311.75,313.2 1 1
 github.com/ashparshp/bookings/internal/handlers/handlers.go:316.86,318.9 2 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:318.9,323.3 4 0
 github.com/ashparshp/bookings/internal/handlers/handlers.go:325.2,339.4 9 0

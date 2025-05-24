@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"testing"
 
 	"github.com/ashparshp/bookings/internal/models"
@@ -20,59 +19,45 @@ var theTests = []struct {
 	name       string
 	method     string
 	url        string
-	params      []postData
 	expectedStatusCode int
 }{
-	/*
 	{
 		name: "home",
 		method: "GET",
 		url: "/",
-		params: []postData{},
 		expectedStatusCode: http.StatusOK,
 	},
 	{
 		name: "about",
 		method: "GET",
 		url: "/about",
-		params: []postData{},
 		expectedStatusCode: http.StatusOK,
 	},
 	{
 		name: "gs",
 		method: "GET",
 		url: "/generals-quarters",
-		params: []postData{},
 		expectedStatusCode: http.StatusOK,
 	},
 	{
 		name: "ms",
 		method: "GET",
 		url: "/majors-suite",
-		params: []postData{},
 		expectedStatusCode: http.StatusOK,
 	},
 	{
 		name: "sa",
 		method: "GET",
 		url: "/search-availability",
-		params: []postData{},
 		expectedStatusCode: http.StatusOK,
 	},
 	{
 		name: "contact",
 		method: "GET",
 		url: "/contact",
-		params: []postData{},
 		expectedStatusCode: http.StatusOK,
 	},
-	{
-		name: "ms",
-		method: "GET",
-		url: "/make-reservation",
-		params: []postData{},
-		expectedStatusCode: http.StatusOK,
-	},
+	/*
 	{
 		name: "psa",
 		method: "POST",
@@ -114,7 +99,6 @@ func TestHandlers(t *testing.T) {
 	defer ts.Close()
 	
 	for _, e := range theTests {
-		if e.method == "GET" {
 			res, err := ts.Client().Get(ts.URL + e.url)
 			if err != nil {
 				t.Log(err)
@@ -124,22 +108,6 @@ func TestHandlers(t *testing.T) {
 			if res.StatusCode != e.expectedStatusCode {
 				t.Errorf("For %s, expected %d, got %d", e.name, e.expectedStatusCode, res.StatusCode)
 			}
-		} else {
-			values := url.Values{}
-			for _, x := range e.params {
-				values.Add(x.key, x.value)
-			}
-			res, err := ts.Client().PostForm(ts.URL+e.url, values)
-			if err != nil {
-				t.Log(err)
-				t.Fatal()
-			}
-			if res.StatusCode != e.expectedStatusCode {
-				t.Errorf("For %s, expected %d, got %d", e.name, e.expectedStatusCode, res.StatusCode)
-			}
-			res.Body.Close()
-		}
-
 	}
 }
 
@@ -171,6 +139,20 @@ func TestRepository_Reservation(t *testing.T) {
 	ctx = getCtx(req)
 	req = req.WithContext(ctx)
 	rr = httptest.NewRecorder()
+
+	handler.ServeHTTP(rr, req)
+	if rr.Code != http.StatusTemporaryRedirect {
+		t.Errorf("Expected status code %d, got %d", http.StatusTemporaryRedirect, rr.Code)
+	}
+
+	// test with non-existent room
+	req, _ = http.NewRequest("GET", "/make-reservation", nil)
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+	rr = httptest.NewRecorder()
+	reservation.RoomID = 999 // non-existent room ID
+
+	session.Put(ctx, "reservation", reservation)
 
 	handler.ServeHTTP(rr, req)
 	if rr.Code != http.StatusTemporaryRedirect {
