@@ -1,9 +1,14 @@
 package handlers
 
 import (
+	"context"
+	"log"
+	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
+
+	"github.com/ashparshp/bookings/internal/models"
 )
 
 type postData struct {
@@ -139,5 +144,34 @@ func TestHandlers(t *testing.T) {
 }
 
 func TestRepository_Reservation(t *testing.T) {
-	
+	reservation := models.Reservation{
+		RoomID: 1,
+		Room: models.Room{
+			ID: 1,
+			RoomName: "General's Quarters",
+		},
+	}
+
+	req, _ := http.NewRequest("GET", "/make-reservation", nil)
+	ctx := getCtx(req)
+	req = req.WithContext(ctx)
+
+	rr := httptest.NewRecorder()
+	session.Put(ctx, "reservation", reservation)
+
+	handler := http.HandlerFunc(Repo.ReservationPage)
+
+	handler.ServeHTTP(rr, req)
+	if rr.Code != http.StatusOK {
+		t.Errorf("Expected status code %d, got %d", http.StatusOK, rr.Code)
+	}
+}
+
+func getCtx(req *http.Request) context.Context {
+	ctx, err := session.Load(req.Context(), req.Header.Get("X-Session"))
+	if err != nil {
+		log.Println("Error loading session:", err)
+		return nil
+	}
+	return ctx
 }
