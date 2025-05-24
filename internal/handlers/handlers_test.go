@@ -165,6 +165,17 @@ func TestRepository_Reservation(t *testing.T) {
 	if rr.Code != http.StatusOK {
 		t.Errorf("Expected status code %d, got %d", http.StatusOK, rr.Code)
 	}
+
+	// test case where reservation is not in session (reset everything)
+	req, _ = http.NewRequest("GET", "/make-reservation", nil)
+	ctx = getCtx(req)
+	req = req.WithContext(ctx)
+	rr = httptest.NewRecorder()
+
+	handler.ServeHTTP(rr, req)
+	if rr.Code != http.StatusTemporaryRedirect {
+		t.Errorf("Expected status code %d, got %d", http.StatusTemporaryRedirect, rr.Code)
+	}
 }
 
 func getCtx(req *http.Request) context.Context {
