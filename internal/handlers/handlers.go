@@ -107,7 +107,8 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 	
 	err := r.ParseForm()
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "can't parse form")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 
@@ -170,7 +171,8 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 
 	newReservationID, err := m.DB.InsertReservation(reservation)
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "can't insert reservation into database")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 
@@ -184,12 +186,13 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 
 	err = m.DB.InsertRoomRestriction(restriction)
 	if err != nil {
-		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "can't insert room restriction")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 
 	m.App.Session.Put(r.Context(), "reservation", reservation)
-	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
+	http.Redirect(w, r, "/reservation-summary", http.StatusTemporaryRedirect)
 }
 
 // GeneralsPage renders the room page
