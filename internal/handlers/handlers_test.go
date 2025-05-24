@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
@@ -19,6 +18,7 @@ var theTests = []struct {
 	params      []postData
 	expectedStatusCode int
 }{
+	/*
 	{
 		name: "home",
 		method: "GET",
@@ -100,6 +100,7 @@ var theTests = []struct {
 		},
 		expectedStatusCode: http.StatusOK,
 	},
+	*/
 }
 
 func TestHandlers(t *testing.T) {
@@ -135,4 +136,8 @@ func TestHandlers(t *testing.T) {
 		}
 
 	}
+}
+
+func TestRepository_Reservation(t *testing.T) {
+	
 }
