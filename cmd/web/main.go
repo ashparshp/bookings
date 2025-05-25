@@ -37,17 +37,6 @@ func main() {
 	listenForMail()
 
 	/*
-	msg := models.MailData{
-		To:      "ashparsh@gmail.com",
-		From:    "me@here.com",
-		Subject: "Test email",
-		Content: "This is a test email",
-	}
-
-	app.MailChan <- msg
-	*/
-
-	/*
 	http.HandleFunc("/", handlers.Repo.HomePage)
 	http.HandleFunc("/about", handlers.Repo.AboutPage)
 	*/
