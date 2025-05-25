@@ -4,6 +4,7 @@ import (
 	"encoding/gob"
 	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -26,18 +27,18 @@ var session *scs.SessionManager
 var pathToTemplates = "./../../templates"
 
 func TestMain(m *testing.M) {
-	// what am I going to put in the session
-	gob.Register(models.Reservation{})
+    // what am I going to put in the session
+    gob.Register(models.Reservation{})
 
+    // change this to true when in production
+    app.InProduction = false
 
-	// change this to true when in production
-	app.InProduction = false
+    infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+    app.InfoLog = infoLog
 
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	app.InfoLog = infoLog
-
-	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
-	app.ErrorLog = errorLog
+    // Use a null writer for error logs during tests
+    errorLog := log.New(io.Discard, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+    app.ErrorLog = errorLog
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
