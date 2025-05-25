@@ -224,6 +224,7 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 		From:    "me@here.com",
 		Subject: "New Reservation",
 		Content: adminMessage,
+		Template: "basic.html",
 	}
 	
 	m.App.MailChan <- adminMsg
