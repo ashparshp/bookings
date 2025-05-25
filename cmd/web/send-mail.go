@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/ashparshp/bookings/internal/models"
@@ -35,7 +38,19 @@ func sendMsg(m models.MailData) {
 		AddTo(m.To).
 		SetSubject(m.Subject)
 
+	if m.Template == "" {
 	emial.SetBody(mail.TextHTML, m.Content)
+	} else {
+		data, err := ioutil.ReadFile(fmt.Sprintf("./templates/%s", m.Template))
+		if err != nil {
+			app.ErrorLog.Println("Error reading template file:", err)
+			return
+		}
+		
+		mailTemplate := string(data)
+		msgToSend := strings.Replace(mailTemplate, "[%body%]", m.Content, 1)
+		emial.SetBody(mail.TextHTML, msgToSend)
+	}
 
 	err = emial.Send(client)
 	if err != nil {
