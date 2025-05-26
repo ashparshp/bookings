@@ -490,3 +490,9 @@ func (m *Repository) LogoutPage (w http.ResponseWriter, r *http.Request) {
 	m.App.Session.Put(r.Context(), "flash", "Logged out successfully")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+
+// AdminDashboardPage renders the admin dashboard page
+func (m *Repository) AdminDashboardPage(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "admin-dashboard.page.tmpl", &models.TemplateData{
+	})
+}
