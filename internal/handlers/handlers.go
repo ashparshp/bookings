@@ -497,8 +497,16 @@ func (m *Repository) AdminDashboardPage(w http.ResponseWriter, r *http.Request) 
 	})
 }
 
-// AdminNewReservationPage renders the admin new reservation page
+// AdminNewReservationPage renders the admin new reservations page
 func (m *Repository) AdminNewReservationPage(w http.ResponseWriter, r *http.Request) {
+	newReservations, err := m.DB.AllNewReservations()
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Unable to retrieve new reservations")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+	data := make(map[string]interface{})
+	data["new_reservations"] = newReservations
 	render.Template(w, r, "admin-new-reservations.page.tmpl", &models.TemplateData{})
 }
 
