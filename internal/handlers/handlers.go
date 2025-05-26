@@ -482,3 +482,11 @@ func (m *Repository) PostLoginPage (w http.ResponseWriter, r *http.Request) {
 	m.App.Session.Put(r.Context(), "flash", "Logged in successfully")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+
+// LogoutPage handles the logout process
+func (m *Repository) LogoutPage (w http.ResponseWriter, r *http.Request) {
+	m.App.Session.Destroy(r.Context())
+	m.App.Session.RenewToken(r.Context())
+	m.App.Session.Put(r.Context(), "flash", "Logged out successfully")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
