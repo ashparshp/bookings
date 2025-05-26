@@ -6,6 +6,15 @@
 
 {{define "content"}}
     <div class="col-md-12">
-        All reservations content
+    {{$res := index .Data "reservations"}}
+
+
+    {{range $res}}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{.ID}}</h5>
+            </div>
+        </div>
+    {{end}}
     </div>
 {{end}}
