@@ -48,6 +48,8 @@ func routes(_ *config.AppConfig) http.Handler {
 		mux.Get("/reservations-all", handlers.Repo.AdminAllReservationsPage)
 		mux.Get("/reservations-new", handlers.Repo.AdminNewReservationPage)
 		mux.Get("/reservations-calendar", handlers.Repo.AdminReservationCalendarPage)
+
+		mux.Get("/reservations/{src}/{id}", handlers.Repo.AdminShowReservationPage)
 	})
 	fileServer := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
