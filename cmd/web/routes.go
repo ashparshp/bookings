@@ -48,4 +48,3 @@ func routes(_ *config.AppConfig) http.Handler {
 
 	return mux
 }
-
