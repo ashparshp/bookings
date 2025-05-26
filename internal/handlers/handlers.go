@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/ashparshp/bookings/internal/config"
@@ -531,7 +532,38 @@ func (m *Repository) AdminAllReservationsPage(w http.ResponseWriter, r *http.Req
 
 // AdminShowReservationPage renders the admin show reservation page
 func (m *Repository) AdminShowReservationPage(w http.ResponseWriter, r *http.Request) {
+	pathSegments := strings.Split(r.RequestURI, "/")
+
+	id, err := strconv.Atoi(pathSegments[len(pathSegments)-1])
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Invalid reservation ID")
+		http.Redirect(w, r, "/admin/reservations", http.StatusSeeOther)
+		return
+	}
+
+	src := pathSegments[len(pathSegments)-2]
+	stringMap:= make(map[string]string)
+	stringMap["src"] = src
+
+	res, err := m.DB.GetReservationByID(id)
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "Unable to retrieve reservation")
+		http.Redirect(w, r, "/admin/reservations", http.StatusSeeOther)
+		return
+	}
+
+	if res.Room.ID == 0 {
+		m.App.Session.Put(r.Context(), "error", "No room found for this reservation")
+		http.Redirect(w, r, "/admin/reservations", http.StatusSeeOther)
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["reservation"] = res
+
 	render.Template(w, r, "admin-show-reservation.page.tmpl", &models.TemplateData{
+		Data: data,
+		StringMap: stringMap,
 	})
 }
 
