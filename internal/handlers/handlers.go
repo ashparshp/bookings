@@ -571,6 +571,51 @@ func (m *Repository) AdminShowReservationPage(w http.ResponseWriter, r *http.Req
 	})
 }
 
+// AdminPostShowReservationPage handles the post request for showing a reservation
+func (m *Repository) AdminPostShowReservationPage(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	pathSegments := strings.Split(r.RequestURI, "/")
+
+	id, err := strconv.Atoi(pathSegments[len(pathSegments)-1])
+	if err != nil {
+		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Invalid reservation ID")
+		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
+		return
+	}
+
+	src := pathSegments[len(pathSegments)-2]
+	stringMap:= make(map[string]string)
+	stringMap["src"] = src
+
+	res, err := m.DB.GetReservationByID(id)
+	if err != nil {
+		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Unable to retrieve reservation")
+		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
+		return
+	}
+
+	res.FirstName = r.Form.Get("first_name")
+	res.LastName = r.Form.Get("last_name")
+	res.Email = r.Form.Get("email")
+	res.Phone = r.Form.Get("phone")
+	
+	err = m.DB.UpdateReservation(res, id)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	m.App.Session.Put(r.Context(), "flash", "Reservation updated!")
+	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+}
+
 // AdminReservationCalendarPage renders the admin reservation calendar page
 func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http.Request) {
 	render.Template(w, r, "admin-reservations-calendar.page.tmpl", &models.TemplateData{
