@@ -507,7 +507,9 @@ func (m *Repository) AdminNewReservationPage(w http.ResponseWriter, r *http.Requ
 	}
 	data := make(map[string]interface{})
 	data["new_reservations"] = newReservations
-	render.Template(w, r, "admin-new-reservations.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "admin-new-reservations.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 }
 
 // AdminAllReservationsPage renders the admin all reservations page
