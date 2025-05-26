@@ -171,14 +171,24 @@ func (m *postgresDBRepo) AuthenticateUser(email, testPassword string) (int, stri
 	return id, hashedPassword, nil
 }
 
-// Get AllReservations returns all reservations from the database
+// AllReservations returns all reservations from the database
 func (m *postgresDBRepo) AllReservations() ([]models.Reservation, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	var reservations []models.Reservation
 
-	query := `SELECT id, first_name, last_name, email, phone, start_date, end_date, room_id, created_at, updated_at FROM reservations left join rooms on reservations.room_id = rooms.id order by start_date asc`
+	query := `
+		SELECT 
+			r.id, r.first_name, r.last_name, r.email, r.phone, 
+			r.start_date, r.end_date, r.room_id, 
+			r.created_at, r.updated_at,
+			rm.id, rm.room_name
+		FROM reservations r
+		LEFT JOIN rooms rm ON r.room_id = rm.id
+		ORDER BY r.start_date ASC
+	`
+
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
@@ -187,7 +197,20 @@ func (m *postgresDBRepo) AllReservations() ([]models.Reservation, error) {
 
 	for rows.Next() {
 		var res models.Reservation
-		err := rows.Scan(&res.ID, &res.FirstName, &res.LastName, &res.Email, &res.Phone, &res.StartDate, &res.EndDate, &res.RoomID, &res.CreatedAt, &res.UpdatedAt, &res.Room.ID, &res.Room.RoomName)
+		err := rows.Scan(
+			&res.ID,
+			&res.FirstName,
+			&res.LastName,
+			&res.Email,
+			&res.Phone,
+			&res.StartDate,
+			&res.EndDate,
+			&res.RoomID,
+			&res.CreatedAt,
+			&res.UpdatedAt,
+			&res.Room.ID,
+			&res.Room.RoomName,
+		)
 		if err != nil {
 			return nil, err
 		}
