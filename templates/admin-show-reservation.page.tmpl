@@ -80,7 +80,7 @@
                 msg: 'Are you sure you want to process this reservation?',
                 callback: function (result) {
                     if (result !== false) {
-                        window.location.href = "/admin/process-reservations/{{$src}}/" + id;
+                        window.location.href = "/admin/process-reservation/{{$src}}/" + id;
                     }
                 }
             })
