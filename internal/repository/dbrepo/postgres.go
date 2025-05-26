@@ -162,13 +162,41 @@ func (m *postgresDBRepo) AuthenticateUser(email, testPassword string) (int, stri
 		return 0, "", err
 	}
 
-	// Here you would typically compare the hashed password with the provided password
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(testPassword))
 	if err == bcrypt.ErrMismatchedHashAndPassword {
-		return 0, "", errors.New("incorrect password") // Password does not match
+		return 0, "", errors.New("incorrect password")
 	} else if err != nil {
-		return 0, "", err // Other error occurred
+		return 0, "", err
 	}
-	// For simplicity, we are returning the ID and hashed password directly
 	return id, hashedPassword, nil
+}
+
+// Get AllReservations returns all reservations from the database
+func (m *postgresDBRepo) AllReservations() ([]models.Reservation, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var reservations []models.Reservation
+
+	query := `SELECT id, first_name, last_name, email, phone, start_date, end_date, room_id, created_at, updated_at FROM reservations left join rooms on reservations.room_id = rooms.id order by start_date asc`
+	rows, err := m.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var res models.Reservation
+		err := rows.Scan(&res.ID, &res.FirstName, &res.LastName, &res.Email, &res.Phone, &res.StartDate, &res.EndDate, &res.RoomID, &res.CreatedAt, &res.UpdatedAt, &res.Room.ID, &res.Room.RoomName)
+		if err != nil {
+			return nil, err
+		}
+		reservations = append(reservations, res)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return reservations, nil
 }
