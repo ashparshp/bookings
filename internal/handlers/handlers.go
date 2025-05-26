@@ -496,3 +496,19 @@ func (m *Repository) AdminDashboardPage(w http.ResponseWriter, r *http.Request) 
 	render.Template(w, r, "admin-dashboard.page.tmpl", &models.TemplateData{
 	})
 }
+
+// AdminNewReservationPage renders the admin new reservation page
+func (m *Repository) AdminNewReservationPage(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "admin-new-reservations.page.tmpl", &models.TemplateData{})
+}
+
+// AdminAllReservationsPage renders the admin all reservations page
+func (m *Repository) AdminAllReservationsPage(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "admin-all-reservations.page.tmpl", &models.TemplateData{})
+}
+
+// AdminReservationCalendarPage renders the admin reservation calendar page
+func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "admin-reservations-calendar.page.tmpl", &models.TemplateData{
+	})
+}
