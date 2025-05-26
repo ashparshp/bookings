@@ -308,6 +308,7 @@ func (m *postgresDBRepo) GetReservationByID(id int) (models.Reservation, error) 
 		&res.RoomID,
 		&res.CreatedAt,
 		&res.UpdatedAt,
+		&res.Processed,
 		&res.Room.ID,
 		&res.Room.RoomName,
 	)

@@ -536,8 +536,9 @@ func (m *Repository) AdminShowReservationPage(w http.ResponseWriter, r *http.Req
 
 	id, err := strconv.Atoi(pathSegments[len(pathSegments)-1])
 	if err != nil {
+		helpers.ServerError(w, err)
 		m.App.Session.Put(r.Context(), "error", "Invalid reservation ID")
-		http.Redirect(w, r, "/admin/reservations", http.StatusSeeOther)
+		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
 		return
 	}
 
@@ -547,14 +548,16 @@ func (m *Repository) AdminShowReservationPage(w http.ResponseWriter, r *http.Req
 
 	res, err := m.DB.GetReservationByID(id)
 	if err != nil {
+		helpers.ServerError(w, err)
 		m.App.Session.Put(r.Context(), "error", "Unable to retrieve reservation")
-		http.Redirect(w, r, "/admin/reservations", http.StatusSeeOther)
+		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
 		return
 	}
 
 	if res.Room.ID == 0 {
+		helpers.ServerError(w, err)
 		m.App.Session.Put(r.Context(), "error", "No room found for this reservation")
-		http.Redirect(w, r, "/admin/reservations", http.StatusSeeOther)
+		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
 		return
 	}
 
