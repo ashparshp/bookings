@@ -19,7 +19,7 @@
         <h1 class="mt-3">Reservation Details</h1>
         <h2 class="mt-3">Arrival: {{humanDate $res.StartDate }}</h2>
         <h2 class="mt-3">Departure: {{ $res.EndDate }}</h2>
-        <h2 class="mt-3">>Room: {{ $res.Room.RoomName }}</h2>
+        <h2 class="mt-3">Room: {{ $res.Room.RoomName }}</h2>
         <form method="post" action="/admin/reservations/{{$src}}/{{$res.ID}}" class="" novalidate>
                 <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
 
@@ -66,8 +66,7 @@
                 <hr>
                 <input type="submit" class="btn btn-primary" value="Save">
                 <a href="/admin/reservations-{{$src}}" class="btn btn-warning">Cancel</a>
-                <a href="!#" class="btn btn-info" onclick="processRes({{.$res.ID}})">Process</a>
-                <a href="/admin/reservations/delete/{{$src}}/{{$res.ID}}" class="btn btn-danger">Delete</a>
+                <a href="#!" class="btn btn-info" onclick="processRes({{$res.ID}})">Process</a>
             </form>
     </div>
 {{end}}
@@ -83,7 +82,8 @@
                     if (result !== false) {
                         window.location.href = "/admin/process-reservations/{{$src}}/" + id;
                     }
-                )
+                }
+            })
         }
     </script>
 {{end}}
