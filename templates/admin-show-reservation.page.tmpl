@@ -16,12 +16,33 @@
     {{ $res := index .Data "reservation" }}
     {{ $src := index .StringMap "src" }}
     <div class="col-md-12">
-        <h1 class="mt-3">Reservation Details</h1>
-        <h2 class="mt-3">Arrival: {{humanDate $res.StartDate }}</h2>
-        <h2 class="mt-3">Departure: {{ $res.EndDate }}</h2>
-        <h2 class="mt-3">Room: {{ $res.Room.RoomName }}</h2>
-        <form method="post" action="/admin/reservations/{{$src}}/{{$res.ID}}" class="" novalidate>
-                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="my-2"><i class="fas fa-calendar-check me-2"></i>Reservation Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="reservation-detail">
+                            <span class="text-muted small text-uppercase">Arrival</span>
+                            <h4 class="text-success">{{humanDate $res.StartDate }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="reservation-detail">
+                            <span class="text-muted small text-uppercase">Departure</span>
+                            <h4 class="text-danger">{{humanDate $res.EndDate }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="reservation-detail">
+                            <span class="text-muted small text-uppercase">Room</span>
+                            <h4 class="text-primary">{{ $res.Room.RoomName }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <form method="post" action="/admin/reservations/{{$src}}/{{$res.ID}}" class="needs-validation" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
 
                 <div class="form-group mt-3">
                     <label for="first_name">First Name:</label>
