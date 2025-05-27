@@ -5,17 +5,35 @@
 {{end}}
 
 {{define "content"}}
-    <div class="col-md-12">
-        <div class="text-center">
-            <h3>{{index .StringMap "this_month"}} {{index .StringMap "this_month_year"}}</h3>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-light">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-md-start">
+                                <a class="btn btn-outline-primary" href="/admin/reservations-calendar?y={{index .StringMap "previous_month_year"}}&m={{index .StringMap "previous_month"}}">
+                                    <i class="fas fa-chevron-left"></i> Previous Month
+                                </a>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <h3 class="my-2">{{index .StringMap "this_month"}} {{index .StringMap "this_month_year"}}</h3>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <a class="btn btn-outline-primary" href="/admin/reservations-calendar?y={{index .StringMap "next_month_year"}}&m={{index .StringMap "next_month"}}">
+                                    Next Month <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Calendar content will go here -->
+                        <div class="table-responsive">
+                            <!-- Calendar table placeholder -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-        <div class="float-left">
-            <a class="btn btn-sm btn-outline-secondary" href="/admin/reservations-calendar?y={{index .StringMap "previous_month_year"}}&m={{index .StringMap "previous_month"}}">&lt;&lt;</a>
-            
-        </div>
-
-        <div class="float-right">
-            <a class="btn btn-sm btn-outline-secondary" href="/admin/reservations-calendar?y={{index .StringMap "next_month_year"}}&m={{index .StringMap "next_month"}}">&gt;&gt;</a>
-        </div>
 {{end}}
