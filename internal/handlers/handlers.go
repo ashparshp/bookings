@@ -645,3 +645,27 @@ func (m *Repository) AdminProcessReservationPage(w http.ResponseWriter, r *http.
 
 	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
 }
+
+// AdminDeleteReservationPage deletes a reservation based on the source and ID
+func (m *Repository) AdminDeleteReservationPage(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Invalid reservation ID")
+		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
+		return
+	}
+	src := chi.URLParam(r, "src")
+
+	err = m.DB.DeleteReservation(id)
+	if err != nil {
+		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Unable to delete reservation")
+		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
+		return
+	}
+
+	m.App.Session.Put(r.Context(), "flash", "Reservation deleted!")
+
+	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+}
