@@ -5,6 +5,17 @@
         label {
             font-weight: bold;
         }
+        
+        .reservation-detail {
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            height: 100%;
+        }
+        
+        .text-uppercase {
+            letter-spacing: 0.5px;
+        }
     </style>
 {{end}}
 
@@ -18,7 +29,14 @@
     <div class="col-md-12">
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-primary text-white">
-                <h3 class="my-2"><i class="fas fa-calendar-check me-2"></i>Reservation Details</h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="my-2"><i class="fas fa-calendar-check me-2"></i>Reservation Details</h3>
+                    {{if eq $res.Processed 1}}
+                        <span class="badge bg-success">Processed</span>
+                    {{else}}
+                        <span class="badge bg-warning">Pending</span>
+                    {{end}}
+                </div>
             </div>
             <div class="card-body">
                 <div class="row mb-4">
@@ -89,13 +107,16 @@
                     <div>
                         <input type="submit" class="btn btn-primary" value="Save">
                         <a href="/admin/reservations-{{$src}}" class="btn btn-warning">Cancel</a>
-                        <a href="#!" class="btn btn-info" onclick="processRes({{$res.ID}})">Mark as Processed</a>
+                        {{if eq $res.Processed 0}}
+                            <a href="#!" class="btn btn-info" onclick="processRes({{$res.ID}})">Mark as Processed</a>
+                        {{end}}
                     </div>
                     <div>
                         <a href="#!" class="btn btn-danger" onclick="deleteRes({{$res.ID}})">Delete</a>
                     </div>
                 </div>
             </form>
+        </div>
     </div>
 {{end}}
 
@@ -111,9 +132,7 @@
                         window.location.href = "/admin/process-reservation/{{$src}}/" + id;
                     }
                 }
-
-            })
-            
+            })  
         }
 
         function deleteRes(id) {
