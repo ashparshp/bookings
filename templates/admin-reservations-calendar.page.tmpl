@@ -40,9 +40,9 @@
                             <div class="table-responsive mb-4 table-sm">
                                 <table class="table table-bordered">
                                     <tr class="table-dark">
-                                        {{range $dim}}
+                                        {{range $index := iterate $dim}}
                                         <td class="text-center">
-                                            {{.}}
+                                            {{$index}}
                                         </td>
                                         {{end}}
                                     </tr>
