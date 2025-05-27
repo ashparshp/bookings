@@ -6,6 +6,9 @@
 
 {{define "content"}}
     {{$now := index .Data "now"}}
+    {{$rooms := index .Data "rooms"}}
+    {{$dim := index .IntMap "days_in_month"}}
+    
     <div class="container-fluid">
         <div class="row mb-4">
             <div class="col-12">
@@ -30,6 +33,18 @@
                     <div class="card-body">
                         <!-- Calendar content will go here -->
                         <div class="table-responsive">
+                            {{range $rooms}}
+                            {{$roomID := .ID}}
+                            <h4>{{.RoomName}}</h4>
+
+                            <div class="table-responsive mb-4 table-sm">
+                                <table class="table table-bordered">
+                                    <tr class="table-dark">
+                                        {{range $dim}}
+                                    </tr>
+                                </table>
+                            </div>
+                            {{end}}
                             <!-- Calendar table placeholder -->
                         </div>
                     </div>
