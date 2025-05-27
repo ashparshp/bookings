@@ -77,10 +77,21 @@ func createTemplateCache(t string) error {
 var functions = template.FuncMap{
 	"humanDate": HumanDate,
 	"formatDate": FormatDate,
+	"iterate": Iterate,
 }
 
 var app *config.AppConfig
 var pathToTemplates = "./templates"
+
+// Iterate is a helper function to iterate over a number of items
+func Iterate(count int) []int {
+	var i int
+	var items []int
+	for i = 0; i < count; i++ {
+		items = append(items, i)
+	}
+	return items
+}
 
 // NewRendrer sets the config for the template package
 func NewRenderer(a *config.AppConfig) {
