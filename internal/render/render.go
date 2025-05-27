@@ -78,11 +78,15 @@ var functions = template.FuncMap{
 	"humanDate": HumanDate,
 	"formatDate": FormatDate,
 	"iterate": Iterate,
+	"add": Add,
 }
 
 var app *config.AppConfig
 var pathToTemplates = "./templates"
 
+func Add(a, b int) int {
+	return a + b
+}
 // Iterate is a helper function to iterate over a number of items
 func Iterate(count int) []int {
 	var i int
