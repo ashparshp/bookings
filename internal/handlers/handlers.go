@@ -621,3 +621,27 @@ func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http
 	render.Template(w, r, "admin-reservations-calendar.page.tmpl", &models.TemplateData{
 	})
 }
+
+// AdminProcessReservationPage processes a reservation based on the source and ID
+func (m *Repository) AdminProcessReservationPage(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Invalid reservation ID")
+		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
+		return
+	}
+	src := chi.URLParam(r, "src")
+
+	err = m.DB.UpdateProcessedForReservation(id, 1)
+	if err != nil {
+		helpers.ServerError(w, err)
+		m.App.Session.Put(r.Context(), "error", "Unable to process reservation")
+		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
+		return
+	}
+
+	m.App.Session.Put(r.Context(), "flash", "Reservation processed!")
+
+	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+}
