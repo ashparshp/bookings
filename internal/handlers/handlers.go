@@ -619,7 +619,7 @@ func (m *Repository) AdminPostShowReservationPage(w http.ResponseWriter, r *http
 // AdminReservationCalendarPage renders the admin reservation calendar page
 func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http.Request) {
 	// assume that there is no month/year specified
-	currentTime := time.Now()
+	now := time.Now()
 
 	if r.URL.Query().Get("y") != "" {
 		year, err := strconv.Atoi(r.URL.Query().Get("y"))
@@ -634,11 +634,14 @@ func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http
 			return
 		}
 
-		currentTime = time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+		now = time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
 	}
 
-	next := currentTime.AddDate(0, 1, 0)
-	previous := currentTime.AddDate(0, -1, 0)
+	data := make(map[string]interface{})
+	data["now"] = now
+
+	next := now.AddDate(0, 1, 0)
+	previous := now.AddDate(0, -1, 0)
 	
 	nextMonth := next.Format("01")
 	nextMonthYear := next.Format("2006")
@@ -649,11 +652,12 @@ func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http
 	stringMap["next_month_year"] = nextMonthYear
 	stringMap["previous_month"] = previousMonth
 	stringMap["previous_month_year"] = previousMonthYear
-	stringMap["this_month"] = currentTime.Format("01")
-	stringMap["this_month_year"] = currentTime.Format("2006")
+	stringMap["this_month"] = now.Format("01")
+	stringMap["this_month_year"] = now.Format("2006")
 
 	render.Template(w, r, "admin-reservations-calendar.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
+		Data: data,
 	})
 }
 
