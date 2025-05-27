@@ -669,6 +669,14 @@ func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http
 		Data: data,
 		IntMap: intMap,
 	})
+
+	rooms, err := m.DB.AllRooms()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data["rooms"] = rooms
 }
 
 // AdminProcessReservationPage processes a reservation based on the source and ID
