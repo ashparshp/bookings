@@ -618,7 +618,42 @@ func (m *Repository) AdminPostShowReservationPage(w http.ResponseWriter, r *http
 
 // AdminReservationCalendarPage renders the admin reservation calendar page
 func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http.Request) {
+	// assume that there is no month/year specified
+	currentTime := time.Now()
+
+	if r.URL.Query().Get("y") != "" {
+		year, err := strconv.Atoi(r.URL.Query().Get("y"))
+		if err != nil {
+			helpers.ServerError(w, err)
+			return
+		}
+
+		month, err := strconv.Atoi(r.URL.Query().Get("m"))
+		if err != nil {
+			helpers.ServerError(w, err)
+			return
+		}
+
+		currentTime = time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+	}
+
+	next := currentTime.AddDate(0, 1, 0)
+	previous := currentTime.AddDate(0, -1, 0)
+	
+	nextMonth := next.Format("01")
+	nextMonthYear := next.Format("2006")
+	previousMonth := previous.Format("01")
+	previousMonthYear := previous.Format("2006")
+	stringMap := make(map[string]string)
+	stringMap["next_month"] = nextMonth
+	stringMap["next_month_year"] = nextMonthYear
+	stringMap["previous_month"] = previousMonth
+	stringMap["previous_month_year"] = previousMonthYear
+	stringMap["this_month"] = currentTime.Format("01")
+	stringMap["this_month_year"] = currentTime.Format("2006")
+
 	render.Template(w, r, "admin-reservations-calendar.page.tmpl", &models.TemplateData{
+		StringMap: stringMap,
 	})
 }
 
