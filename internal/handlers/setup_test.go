@@ -21,14 +21,22 @@ import (
 	"github.com/justinas/nosurf"
 )
 
-var functions = template.FuncMap{}
+var functions = template.FuncMap{
+	"humanDate": render.HumanDate,
+	"formatDate": render.FormatDate,
+	"iterate": render.Iterate,
+	"add": render.Add,
+}
 var app config.AppConfig
 var session *scs.SessionManager
 var pathToTemplates = "./../../templates"
 
 func TestMain(m *testing.M) {
-    // what am I going to put in the session
-    gob.Register(models.Reservation{})
+	gob.Register(models.Reservation{})
+	gob.Register(models.User{})
+	gob.Register(models.Room{})
+	gob.Register(models.Restriction{})
+	gob.Register(map[string]int{})
 
     // change this to true when in production
     app.InProduction = false
