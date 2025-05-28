@@ -811,7 +811,7 @@ func (m *Repository) AdminPostReservationCalendarPage(w http.ResponseWriter, r *
 			}
 
 			dateStr := parts[3]
-			layout := "2006-01-02"
+			layout := "2006-01-2"
 			blockDate, err := time.Parse(layout, dateStr)
 			if err != nil {
 				m.App.Session.Put(r.Context(), "error", "Invalid date format")
@@ -821,6 +821,7 @@ func (m *Repository) AdminPostReservationCalendarPage(w http.ResponseWriter, r *
 
 			err = m.DB.InsertBlockForRoom(roomID, blockDate)
 			if err != nil {
+				m.App.ErrorLog.Println("Error inserting block for room:", err)
 				m.App.Session.Put(r.Context(), "error", "Unable to insert block")
 				http.Redirect(w, r, "/admin/reservations-calendar", http.StatusSeeOther)
 				return
