@@ -404,11 +404,11 @@ func (m *Repository) ChooseRoomPage (w http.ResponseWriter, r *http.Request) {
 
 // BookRoomPage takes URL parameters, builds a sessional variable and redirects to make reservation page
 func (m *Repository) BookRoomPage (w http.ResponseWriter, r *http.Request) {
-	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
-	if err != nil {
-		helpers.ServerError(w, err)
-		return
-	}
+	roomID, err := strconv.Atoi(r.URL.Query().Get("id"))
+    if err != nil {
+        helpers.ServerError(w, err)
+        return
+    }
 	
 	sd := r.URL.Query().Get("s")
 	ed := r.URL.Query().Get("e")
