@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -787,7 +786,12 @@ func (m *Repository) AdminPostReservationCalendarPage(w http.ResponseWriter, r *
 				if val > 0 {
 					if !forms.Has(fmt.Sprintf("remove_block_%d_%s", room.ID, name)) {
 						// delete the restriction by id
-						log.Println(value)
+						err = m.DB.DeleteBlockByID(value)
+						if err != nil {
+							m.App.Session.Put(r.Context(), "error", "Unable to delete block")
+							http.Redirect(w, r, "/admin/reservations-calendar", http.StatusSeeOther)
+							return
+						}
 					}
 				}
 			}
