@@ -1,12 +1,278 @@
 {{template "base" .}}
 
 {{define "content"}}
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1>This is the contact page</h1>
+    <div class="contact-container py-5">
+        <div class="container contact-content-wrapper">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-card">
+                        <div class="contact-header">
+                            <h1><i class="fas fa-envelope me-3"></i>Get in Touch</h1>
+                            <p class="mb-0">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+                        </div>
+                        <div class="contact-body p-4 p-md-5">
+                            <div class="contact-form-section">
+                                <h3 class="section-title mb-4"><i class="fas fa-paper-plane me-2"></i>Send us a Message</h3>
+                                <form method="POST" action="/contact" novalidate class="needs-validation">
+                                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                                    
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-6">
+                                            <label for="name" class="form-label fw-bold">Full Name</label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                                <input class="form-control" id="name" name="name" type="text" 
+                                                    placeholder="Your full name" required>
+                                            </div>
+                                            <div class="invalid-feedback">Please enter your name</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label fw-bold">Email Address</label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                                <input class="form-control" id="email" name="email" type="email" 
+                                                    placeholder="your@email.com" required>
+                                            </div>
+                                            <div class="invalid-feedback">Please enter a valid email</div>
+                                        </div>
+                                    </div>
 
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label fw-bold">Phone Number</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon"><i class="fas fa-phone"></i></span>
+                                            <input class="form-control" id="phone" name="phone" type="tel" 
+                                                placeholder="Your phone number">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="subject" class="form-label fw-bold">Subject</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon"><i class="fas fa-tag"></i></span>
+                                            <input class="form-control" id="subject" name="subject" type="text" 
+                                                placeholder="What is this about?" required>
+                                        </div>
+                                        <div class="invalid-feedback">Please enter a subject</div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="message" class="form-label fw-bold">Message</label>
+                                        <div class="textarea-wrapper">
+                                            <span class="textarea-icon"><i class="fas fa-comment"></i></span>
+                                            <textarea class="form-control" id="message" name="message" rows="5" 
+                                                placeholder="Tell us more about your inquiry..." required></textarea>
+                                        </div>
+                                        <div class="invalid-feedback">Please enter your message</div>
+                                    </div>
+                                    
+                                    <div class="d-grid">
+                                        <button type="submit" class="contact-button" id="contact-button">
+                                            <i class="fas fa-paper-plane me-2"></i> Send Message
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="contact-footer">
+                            <i class="fas fa-reply me-2"></i>We typically respond within 24 hours
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+{{end}}
+
+{{define "js"}}
+<style>
+    .contact-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9eef2 100%);
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+    .contact-content-wrapper {
+        max-width: 100%;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    @media (min-width: 992px) {
+        .contact-content-wrapper {
+            max-width: 960px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .contact-content-wrapper {
+            max-width: 1140px;
+        }
+        .contact-body {
+            padding: 3rem 4rem !important;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .contact-content-wrapper {
+            max-width: 1320px;
+        }
+    }
+
+    @media (min-width: 1600px) {
+        .contact-content-wrapper {
+            max-width: 1440px;
+        }
+    }
+
+    @media (min-width: 1800px) {
+        .contact-content-wrapper {
+            max-width: 1600px;
+        }
+    }
+    
+    .contact-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-card:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+    }
+    
+    .contact-header {
+        background: linear-gradient(135deg, #3a7bd5 0%, #1e50a2 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .contact-header h1 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .section-title {
+        color: #1e50a2;
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+    
+    .input-wrapper {
+        position: relative;
+        margin-bottom: 0.5rem;
+    }
+    
+    .input-wrapper .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #3a7bd5;
+        z-index: 10;
+    }
+    
+    .input-wrapper input {
+        border-radius: 30px;
+        padding-left: 45px;
+        height: 50px;
+        font-size: 1rem;
+        border: 2px solid #e1e5eb;
+        transition: all 0.3s ease;
+    }
+    
+    .textarea-wrapper {
+        position: relative;
+        margin-bottom: 0.5rem;
+    }
+    
+    .textarea-wrapper .textarea-icon {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        color: #3a7bd5;
+        z-index: 10;
+    }
+    
+    .textarea-wrapper textarea {
+        border-radius: 15px;
+        padding-left: 45px;
+        padding-top: 15px;
+        font-size: 1rem;
+        border: 2px solid #e1e5eb;
+        transition: all 0.3s ease;
+        resize: vertical;
+        min-height: 120px;
+    }
+    
+    .input-wrapper input:focus,
+    .textarea-wrapper textarea:focus {
+        border-color: #3a7bd5;
+        box-shadow: 0 0 0 0.25rem rgba(58, 123, 213, 0.25);
+        outline: none;
+    }
+    
+    .contact-button {
+        background: linear-gradient(135deg, #3a7bd5 0%, #1e50a2 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 15px 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-button:hover {
+        background: linear-gradient(135deg, #1e50a2 0%, #0a2f73 100%);
+        transform: translateY(-2px);
+    }
+    
+    .contact-footer {
+        background: #f8f9fa;
+        color: #6c757d;
+        padding: 1.5rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    @media (max-width: 768px) {
+        .contact-header h1 {
+            font-size: 2rem;
+        }
+        
+        .contact-body {
+            padding: 2rem 1rem !important;
+        }
+    }
+</style>
+
+<script>
+    (function() {
+        'use strict';
+        const form = document.querySelector('.needs-validation');
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                const button = document.getElementById('contact-button');
+                button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Sending...';
+                button.disabled = true;
+            }
+            form.classList.add('was-validated');
+        }, false);
+    })();
+</script>
 {{end}}
