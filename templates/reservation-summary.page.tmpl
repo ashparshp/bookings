@@ -3,44 +3,356 @@
 {{define "content"}}
     {{$res := index .Data "reservation"}}
 
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1 class="mt-5">Reservation Summary</h1>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+                <!-- Success Header -->
+                <div class="text-center mb-4">
+                    <div class="success-icon mb-2">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h1 class="display-5 text-success mb-2">Reservation Confirmed!</h1>
+                    <p class="lead text-muted">Thank you for your booking. Here are your reservation details.</p>
+                </div>
 
-                <hr>
+                <!-- Reservation Details Card -->
+                <div class="card reservation-card mb-3">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Reservation Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <div class="detail-item">
+                                    <label class="detail-label">
+                                        <i class="fas fa-user me-1"></i>Guest Name
+                                    </label>
+                                    <div class="detail-value">{{$res.FirstName}} {{$res.LastName}}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="detail-item">
+                                    <label class="detail-label">
+                                        <i class="fas fa-bed me-1"></i>Room
+                                    </label>
+                                    <div class="detail-value">{{$res.Room.RoomName}}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="detail-item">
+                                    <label class="detail-label">
+                                        <i class="fas fa-calendar-plus me-1"></i>Check-in
+                                    </label>
+                                    <div class="detail-value">{{index .StringMap "start_date"}}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="detail-item">
+                                    <label class="detail-label">
+                                        <i class="fas fa-calendar-minus me-1"></i>Check-out
+                                    </label>
+                                    <div class="detail-value">{{index .StringMap "end_date"}}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="detail-item">
+                                    <label class="detail-label">
+                                        <i class="fas fa-envelope me-1"></i>Email
+                                    </label>
+                                    <div class="detail-value">{{$res.Email}}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="detail-item">
+                                    <label class="detail-label">
+                                        <i class="fas fa-phone me-1"></i>Phone
+                                    </label>
+                                    <div class="detail-value">{{$res.Phone}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <table class="table table-striped">
-                    <thead></thead>
-                    <tbody>
-                    <tr>
-                        <td>Name:</td>
-                        <td>{{$res.FirstName}} {{$res.LastName}}</td>
-                    </tr>
-                    <tr>
-                        <td>Room:</td>
-                        <td>{{$res.Room.RoomName}}</td>
-                    </tr>
-                    <tr>
-                        <td>Arrival:</td>
-                        <td>{{index .StringMap "start_date"}}</td>
-                    </tr>
-                    <tr>
-                        <td>Departure:</td>
-                        <td>{{index .StringMap "end_date"}}</td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td>{{$res.Email}}</td>
-                    </tr>
-                    <tr>
-                        <td>Phone:</td>
-                        <td>{{$res.Phone}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <!-- Action Buttons -->
+                <div class="text-center">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <button onclick="window.print()" class="btn btn-outline-primary w-100 action-btn">
+                                <i class="fas fa-print me-2"></i>Print Confirmation
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <a href="/" class="btn btn-primary w-100 action-btn">
+                                <i class="fas fa-home me-2"></i>Back to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Additional Info -->
+                <div class="alert alert-info mt-3">
+                    <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Important Information</h6>
+                    <p class="mb-0">
+                        Please save this confirmation for your records. Check-in time is 3:00 PM and check-out time is 11:00 AM.
+                        If you need to make changes to your reservation, please contact us at least 24 hours in advance.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
+
+    <style>
+        .success-icon {
+            font-size: 2.5rem;
+            color: #28a745;
+            animation: successPulse 2s ease-in-out;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .reservation-card {
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .reservation-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            transform: translateY(-1px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border-bottom: none;
+            padding: 12px 15px;
+        }
+
+        .card-header h5 {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .detail-item {
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 2px solid #007bff;
+            transition: all 0.3s ease;
+        }
+
+        .detail-item:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.06);
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.7rem;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .detail-value {
+            font-size: 0.85rem;
+            color: #212529;
+            font-weight: 500;
+        }
+
+        .display-5 {
+            font-weight: 300;
+            letter-spacing: -1px;
+            font-size: 1.8rem;
+        }
+
+        .lead {
+            font-size: 0.9rem;
+        }
+
+        .action-btn {
+            border-radius: 15px;
+            padding: 8px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            font-size: 0.75rem;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .alert {
+            border: none;
+            border-radius: 8px;
+            border-left: 2px solid #17a2b8;
+            font-size: 0.8rem;
+            padding: 12px 15px;
+        }
+
+        .alert-heading {
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        /* Large Screen Optimizations */
+        @media (min-width: 768px) {
+            .col-lg-8.col-xl-6 {
+                flex: 0 0 auto;
+                width: 85%;
+                max-width: none;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .col-lg-8.col-xl-6 {
+                width: 80%;
+            }
+            
+            .card-body {
+                padding: 18px 22px;
+            }
+            
+            .card-header {
+                padding: 14px 22px;
+            }
+            
+            .detail-item {
+                padding: 10px 14px;
+            }
+            
+            .detail-value {
+                font-size: 0.9rem;
+            }
+            
+            .action-btn {
+                padding: 10px 25px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .col-lg-8.col-xl-6 {
+                width: 75%;
+            }
+            
+            .display-5 {
+                font-size: 2.2rem;
+            }
+            
+            .lead {
+                font-size: 1rem;
+            }
+            
+            .card-body {
+                padding: 20px 28px;
+            }
+            
+            .card-header {
+                padding: 16px 28px;
+            }
+            
+            .card-header h5 {
+                font-size: 0.95rem;
+            }
+            
+            .detail-label {
+                font-size: 0.75rem;
+                margin-bottom: 4px;
+            }
+            
+            .detail-value {
+                font-size: 0.95rem;
+            }
+            
+            .action-btn {
+                padding: 10px 28px;
+                font-size: 0.85rem;
+            }
+            
+            .alert {
+                font-size: 0.85rem;
+                padding: 14px 18px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .col-lg-8.col-xl-6 {
+                width: 70%;
+            }
+            
+            .success-icon {
+                font-size: 3rem;
+            }
+            
+            .display-5 {
+                font-size: 2.5rem;
+            }
+            
+            .lead {
+                font-size: 1.1rem;
+            }
+            
+            .card-body {
+                padding: 22px 32px;
+            }
+            
+            .card-header {
+                padding: 18px 32px;
+            }
+            
+            .detail-item {
+                padding: 12px 16px;
+            }
+            
+            .detail-value {
+                font-size: 1rem;
+            }
+            
+            .action-btn {
+                padding: 12px 30px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .action-btn, .alert { display: none !important; }
+            .card { box-shadow: none !important; border: 1px solid #dee2e6 !important; }
+            .success-icon { color: #000 !important; }
+        }
+
+        @media (max-width: 768px) {
+            .display-5 {
+                font-size: 1.5rem;
+            }
+            
+            .card-body {
+                padding: 12px;
+            }
+            
+            .success-icon {
+                font-size: 2rem;
+            }
+            
+            .detail-item {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
 {{end}}
