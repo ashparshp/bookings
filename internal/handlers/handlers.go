@@ -820,7 +820,7 @@ func (m *Repository) AdminPostReservationCalendarPage(w http.ResponseWriter, r *
 		if strings.HasPrefix(name, "add_block_") {
 			parts := strings.Split(name, "_")
 
-			roomID, err := strconv.Atoi(parts[4])
+			roomID, err := strconv.Atoi(parts[2])
 			if err != nil {
 				m.App.Session.Put(r.Context(), "error", "Invalid room ID")
 				http.Redirect(w, r, "/admin/reservations-calendar", http.StatusSeeOther)
