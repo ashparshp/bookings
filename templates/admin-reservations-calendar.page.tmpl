@@ -38,7 +38,7 @@
                             {{range $rooms}}
                             {{$roomID := .ID}}
                             {{$blocks := index $.Data (printf "block_map_%d" .ID)}}
-                            {{$reservations := index $.Data (printf "reservations_map_%d" .ID)}}
+                            {{$reservations := index $.Data (printf "reservation_map_%d" .ID)}}
 
                             <h4>{{.RoomName}}</h4>
 
