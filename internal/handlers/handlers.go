@@ -747,9 +747,17 @@ func (m *Repository) AdminProcessReservationPage(w http.ResponseWriter, r *http.
 		return
 	}
 
+	year := r.URL.Query().Get("y")
+	month := r.URL.Query().Get("m")
 	m.App.Session.Put(r.Context(), "flash", "Reservation processed!")
 
+	if year == "" {
 	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-calendar?y=%s&m=%s", year, month), http.StatusSeeOther)
+		return
+	}
+
 }
 
 // AdminDeleteReservationPage deletes a reservation based on the source and ID
@@ -770,10 +778,17 @@ func (m *Repository) AdminDeleteReservationPage(w http.ResponseWriter, r *http.R
 		http.Redirect(w, r, "/admin/dashboard", http.StatusSeeOther)
 		return
 	}
+	
+	year := r.URL.Query().Get("y")
+	month := r.URL.Query().Get("m")
 
 	m.App.Session.Put(r.Context(), "flash", "Reservation deleted!")
-
-	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+	if year == "" {
+		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-calendar?y=%s&m=%s", year, month), http.StatusSeeOther)
+		return
+	}
 }
 
 // AdminPostReservationCalendarPage handles the post request for the admin reservation calendar
