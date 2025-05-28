@@ -1,19 +1,85 @@
 {{template "base" .}}
 
 {{define "content"}}
-    <div class="container">
+    <div class="container mt-5">
         <div class="row">
-            <div class="col">
-                <h1>Choose a Room</h1>
-                {{$rooms := index .Data "rooms"}}
-                <ul>
-                {{range $rooms}}
-                    <li>
-                        <a href="/choose-room/{{.ID}}">{{.RoomName}}</a>
-                    </li>
-                {{end}}
-                </ul>
+            <div class="col-12">
+                <div class="text-center mb-5">
+                    <h1 class="display-4 text-primary mb-3">Choose Your Perfect Room</h1>
+                    <p class="lead text-muted">Select from our collection of beautifully designed rooms</p>
+                </div>
             </div>
         </div>
+        
+        <div class="row justify-content-center">
+            {{$rooms := index .Data "rooms"}}
+            {{range $rooms}}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm room-card">
+                    <div class="card-img-top room-image-placeholder d-flex align-items-center justify-content-center">
+                        <i class="fas fa-bed fa-3x text-white"></i>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">{{.RoomName}}</h5>
+                        <p class="card-text text-muted flex-grow-1">
+                            Experience comfort and luxury in our {{.RoomName}}. Perfect for your stay.
+                        </p>
+                        <div class="mt-auto">
+                            <a href="/choose-room/{{.ID}}" class="btn btn-primary btn-block room-select-btn">
+                                <i class="fas fa-check-circle me-2"></i>Select This Room
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
     </div>
+
+    <style>
+        .room-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        
+        .room-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,123,255,0.15) !important;
+        }
+        
+        .room-image-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .room-select-btn {
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .room-select-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.4);
+        }
+        
+        .display-4 {
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+        
+        @media (max-width: 768px) {
+            .display-4 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
 {{end}}
