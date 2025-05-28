@@ -1,58 +1,258 @@
 {{template "base" .}}
 
 {{define "content"}}
-
-    <div class="container">
-
-
-        <div class="row">
-            <div class="col">
+<div class="container-fluid px-0">
+    <!-- Hero Section -->
+    <div class="row no-gutters">
+        <div class="col">
+            <div class="room-hero position-relative">
                 <img src="/static/images/generals-quarters.png"
-                     class="img-fluid img-thumbnail mx-auto d-block room-image" alt="room image">
+                     class="img-fluid w-100 room-hero-image" alt="General's Quarters - Luxury Ocean View Room">
+                <div class="room-hero-overlay">
+                    <div class="hero-content text-center text-white">
+                        <h1 class="display-4 font-weight-bold mb-3">General's Quarters</h1>
+                        <p class="lead mb-4">Luxury meets comfort on the Atlantic Ocean</p>
+                        <a id="check-availability-button" href="#!" class="btn btn-primary btn-lg px-5 py-3 shadow">
+                            <i class="fas fa-calendar-check mr-2"></i>Check Availability
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-
-
-        <div class="row">
-            <div class="col">
-                <h1 class="text-center mt-4">General's Quarters</h1>
-                <p>
-                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
-                    to remember.
-                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
-                    to remember.
-                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
-                    to remember.
-                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
-                    to remember.
-                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
-                    to remember.
-                    Your home away form home, set on the majestic waters of the Atlantic Ocean, this will be a vacation
-                    to remember.
-                </p>
-            </div>
-        </div>
-
-
-        <div class="row">
-
-            <div class="col text-center">
-
-                <a id="check-availability-button" href="#!" class="btn btn-success">Check Availability</a>
-
-            </div>
-        </div>
-
-
-
-
     </div>
+</div>
+
+<!-- Room Details Section -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Room Description Card -->
+            <div class="card shadow-lg border-0 mb-5">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="card-title text-primary mb-3">Your Ocean Paradise Awaits</h2>
+                        <div class="title-underline mx-auto"></div>
+                    </div>
+                    
+                    <p class="card-text lead text-muted mb-4">
+                        Escape to your home away from home, perched majestically on the pristine waters of the Atlantic Ocean. 
+                        The General's Quarters offers an unparalleled vacation experience that will create memories to last a lifetime.
+                    </p>
+                    
+                    <p class="card-text text-muted">
+                        Wake up to breathtaking ocean views, fall asleep to the gentle sound of waves, and immerse yourself 
+                        in luxury amenities designed for the discerning traveler. Whether you're seeking romance, relaxation, 
+                        or adventure, this magnificent oceanfront retreat provides the perfect backdrop for an unforgettable getaway.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="row mb-5">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-water text-primary fa-3x"></i>
+                        </div>
+                        <h5 class="feature-title">Ocean Views</h5>
+                        <p class="feature-text text-muted">Panoramic Atlantic Ocean views from every window</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-bed text-primary fa-3x"></i>
+                        </div>
+                        <h5 class="feature-title">Luxury Comfort</h5>
+                        <p class="feature-text text-muted">Premium furnishings and world-class amenities</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-concierge-bell text-primary fa-3x"></i>
+                        </div>
+                        <h5 class="feature-title">5-Star Service</h5>
+                        <p class="feature-text text-muted">Personalized service to exceed your expectations</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Amenities Section -->
+            <div class="card shadow border-0 mb-5">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0"><i class="fas fa-star mr-2"></i>Room Amenities</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="amenities-list list-unstyled">
+                                <li class="mb-2"><i class="fas fa-wifi text-success mr-2"></i>Complimentary Wi-Fi</li>
+                                <li class="mb-2"><i class="fas fa-tv text-success mr-2"></i>55" Smart TV</li>
+                                <li class="mb-2"><i class="fas fa-coffee text-success mr-2"></i>Coffee & Tea Station</li>
+                                <li class="mb-2"><i class="fas fa-bath text-success mr-2"></i>Luxury Bathroom</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="amenities-list list-unstyled">
+                                <li class="mb-2"><i class="fas fa-wind text-success mr-2"></i>Climate Control</li>
+                                <li class="mb-2"><i class="fas fa-door-open text-success mr-2"></i>Private Balcony</li>
+                                <li class="mb-2"><i class="fas fa-utensils text-success mr-2"></i>Mini Bar</li>
+                                <li class="mb-2"><i class="fas fa-shield-alt text-success mr-2"></i>24/7 Security</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Call to Action -->
+            <div class="text-center">
+                <div class="cta-section bg-light rounded p-5">
+                    <h3 class="text-primary mb-3">Ready to Experience Paradise?</h3>
+                    <p class="text-muted mb-4">Book your stay at the General's Quarters and create unforgettable memories</p>
+                    <a id="check-availability-button-bottom" href="#!" class="btn btn-success btn-lg px-5 py-3 shadow">
+                        <i class="fas fa-calendar-check mr-2"></i>Check Availability & Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+.room-hero {
+    height: 70vh;
+    min-height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.room-hero-image {
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+}
+
+.room-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(0,123,255,0.3), rgba(40,167,69,0.3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    z-index: 2;
+}
+
+.title-underline {
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #007bff, #28a745);
+    border-radius: 2px;
+}
+
+.feature-card {
+    background: #f8f9fa;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.feature-icon {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+.amenities-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.amenities-list li:last-child {
+    border-bottom: none;
+}
+
+.cta-section {
+    border: 2px dashed #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.cta-section:hover {
+    border-color: #007bff;
+    background: white !important;
+}
+
+@media (max-width: 768px) {
+    .room-hero {
+        height: 50vh;
+        min-height: 400px;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .feature-card {
+        margin-bottom: 20px;
+    }
+}
+</style>
 
 {{end}}
 
-
 {{define "js"}}
 <script>
-    checkAvalbility("1", {{.CSRFToken}})
+    // Initialize availability check for both buttons
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAvalbility("1", "{{.CSRFToken}}");
+        
+        // Add click handler for bottom button as well
+        const bottomButton = document.getElementById('check-availability-button-bottom');
+        if (bottomButton) {
+            bottomButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('check-availability-button').click();
+            });
+        }
+        
+        // Smooth scroll to top when availability is checked
+        const checkButton = document.getElementById('check-availability-button');
+        if (checkButton) {
+            checkButton.addEventListener('click', function() {
+                // Smooth scroll to top after a short delay
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            });
+        }
+        
+        // Add parallax effect to hero image
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.room-hero-image');
+            if (parallax) {
+                const speed = scrolled * 0.5;
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+    });
 </script>
 {{end}}
