@@ -677,8 +677,8 @@ func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http
 		blockMap := make(map[string]int)
 
 		for d := firstOfMonth; !d.After(lastOfMonth); d = d.AddDate(0, 0, 1) {
-			reservationMap[d.Format("2006-01-2")] = 0
-			blockMap[d.Format("2006-01-2")] = 0
+			reservationMap[d.Format("2006-01-02")] = 0
+			blockMap[d.Format("2006-01-02")] = 0
 		}
 
 		restrictions , err := m.DB.GetRestrictionsForRoomByDate(room.ID, firstOfMonth, lastOfMonth)
@@ -690,10 +690,10 @@ func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http
 		for _, restriction := range restrictions {
 			if restriction.ReservationID > 0 {
 				for d := restriction.StartDate; !d.After(restriction.EndDate); d = d.AddDate(0, 0, 1) {
-					reservationMap[d.Format("2006-01-2")] = restriction.ReservationID
+					reservationMap[d.Format("2006-01-02")] = restriction.ReservationID
 				}
 			} else {
-				blockMap[restriction.StartDate.Format("2006-01-2")] = restriction.ID
+				blockMap[restriction.StartDate.Format("2006-01-02")] = restriction.ID
 			}
 		}
 
