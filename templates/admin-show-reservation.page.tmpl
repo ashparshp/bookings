@@ -61,6 +61,8 @@
                 </div>
                 <form method="post" action="/admin/reservations/{{$src}}/{{$res.ID}}" class="needs-validation" novalidate>
                     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                    <input type="hidden" name="year" value="{{index .StringMap "year"}}">
+                    <input type="hidden" name="month" value="{{index .StringMap "month"}}">
 
                 <div class="form-group mt-3">
                     <label for="first_name">First Name:</label>

@@ -546,6 +546,11 @@ func (m *Repository) AdminShowReservationPage(w http.ResponseWriter, r *http.Req
 	stringMap:= make(map[string]string)
 	stringMap["src"] = src
 
+	year := r.URL.Query().Get("y")
+	stringMap["year"] = year
+	month := r.URL.Query().Get("m")
+	stringMap["month"] = month
+
 	res, err := m.DB.GetReservationByID(id)
 	if err != nil {
 		helpers.ServerError(w, err)
@@ -612,8 +617,16 @@ func (m *Repository) AdminPostShowReservationPage(w http.ResponseWriter, r *http
 		return
 	}
 
+	month := r.Form.Get("month")
+	year := r.Form.Get("year")
+
 	m.App.Session.Put(r.Context(), "flash", "Reservation updated!")
-	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+
+	if year == "" {
+		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-calendar?y=%s&m=%s", year, month), http.StatusSeeOther)
+	}
 }
 
 // AdminReservationCalendarPage renders the admin reservation calendar page
