@@ -162,11 +162,20 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 	form.IsEmail("email")
 
 	if !form.Valid() {
+
+		sd := reservation.StartDate.Format("2006-01-02")
+        ed := reservation.EndDate.Format("2006-01-02")
+        
+        StringMap := make(map[string]string)
+        StringMap["start_date"] = sd
+        StringMap["end_date"] = ed
+
 		data := make(map[string]interface{})
 		data["reservation"] = reservation
 		render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 			Form: form,
 			Data: data,
+			StringMap: StringMap,
 		})
 		return
 	}
