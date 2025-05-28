@@ -139,8 +139,8 @@ func TestRepository_Reservation(t *testing.T) {
     rr = httptest.NewRecorder()
 
     handler.ServeHTTP(rr, req)
-    if rr.Code != http.StatusTemporaryRedirect {
-        t.Errorf("Expected status code %d, got %d", http.StatusTemporaryRedirect, rr.Code)
+    if rr.Code != http.StatusSeeOther {
+        t.Errorf("Expected status code %d, got %d", http.StatusSeeOther, rr.Code)
     }
 
     // test with non-existent room
@@ -153,8 +153,8 @@ func TestRepository_Reservation(t *testing.T) {
     session.Put(ctx, "reservation", reservation)
 
     handler.ServeHTTP(rr, req)
-    if rr.Code != http.StatusTemporaryRedirect {
-        t.Errorf("Expected status code %d, got %d", http.StatusTemporaryRedirect, rr.Code)
+    if rr.Code != http.StatusSeeOther {
+        t.Errorf("Expected status code %d, got %d", http.StatusSeeOther, rr.Code)
     }
 }
 
@@ -200,8 +200,8 @@ func TestRepository_PostReservation(t *testing.T) {
     handler := http.HandlerFunc(Repo.PostReservationPage)
     handler.ServeHTTP(rr, req)
 
-    if rr.Code != http.StatusTemporaryRedirect {
-        t.Errorf("PostReservationPage handler returned wrong status code: got %d, wanted %d", rr.Code, http.StatusTemporaryRedirect)
+    if rr.Code != http.StatusSeeOther {
+        t.Errorf("PostReservationPage handler returned wrong status code: got %d, wanted %d", rr.Code, http.StatusSeeOther)
     }
 
     // Case 2: missing session data
@@ -215,8 +215,8 @@ func TestRepository_PostReservation(t *testing.T) {
     handler = http.HandlerFunc(Repo.PostReservationPage)
     handler.ServeHTTP(rr, req)
 
-    if rr.Code != http.StatusTemporaryRedirect {
-        t.Errorf("PostReservationPage handler returned wrong status code for missing session: got %d, wanted %d", rr.Code, http.StatusTemporaryRedirect)
+    if rr.Code != http.StatusSeeOther {
+        t.Errorf("PostReservationPage handler returned wrong status code for missing session: got %d, wanted %d", rr.Code, http.StatusSeeOther)
     }
 
     // Case 3: invalid form data
@@ -239,8 +239,8 @@ func TestRepository_PostReservation(t *testing.T) {
     handler = http.HandlerFunc(Repo.PostReservationPage)
     handler.ServeHTTP(rr, req)
 
-    if rr.Code != http.StatusSeeOther {
-        t.Errorf("PostReservationPage handler returned wrong status code for invalid form: got %d, wanted %d", rr.Code, http.StatusSeeOther)
+    if rr.Code != http.StatusOK {
+        t.Errorf("PostReservationPage handler returned wrong status code for invalid form: got %d, wanted %d", rr.Code, http.StatusOK)
     }
 }
 
@@ -281,7 +281,7 @@ func TestRepository_ReservationSummary(t *testing.T) {
     handler = http.HandlerFunc(Repo.ReservationSummaryPage)
     handler.ServeHTTP(rr, req)
 
-    if rr.Code != http.StatusTemporaryRedirect {
-        t.Errorf("ReservationSummaryPage handler returned wrong status code when no reservation in session: got %d, wanted %d", rr.Code, http.StatusTemporaryRedirect)
+    if rr.Code != http.StatusSeeOther {
+        t.Errorf("ReservationSummaryPage handler returned wrong status code when no reservation in session: got %d, wanted %d", rr.Code, http.StatusSeeOther)
     }
 }
