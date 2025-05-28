@@ -534,7 +534,7 @@ func (m *Repository) AdminAllReservationsPage(w http.ResponseWriter, r *http.Req
 func (m *Repository) AdminShowReservationPage(w http.ResponseWriter, r *http.Request) {
 	pathSegments := strings.Split(r.RequestURI, "/")
 
-	id, err := strconv.Atoi(pathSegments[len(pathSegments)-1])
+	id, err := strconv.Atoi(pathSegments[2])
 	if err != nil {
 		helpers.ServerError(w, err)
 		m.App.Session.Put(r.Context(), "error", "Invalid reservation ID")
@@ -542,14 +542,18 @@ func (m *Repository) AdminShowReservationPage(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	src := pathSegments[len(pathSegments)-2]
+	src := pathSegments[3]
 	stringMap:= make(map[string]string)
 	stringMap["src"] = src
 
 	year := r.URL.Query().Get("y")
-	stringMap["year"] = year
+	if year != "" {
+		stringMap["year"] = year
+	}
 	month := r.URL.Query().Get("m")
-	stringMap["month"] = month
+	if month != "" {
+		stringMap["month"] = month
+	}
 
 	res, err := m.DB.GetReservationByID(id)
 	if err != nil {
@@ -586,7 +590,7 @@ func (m *Repository) AdminPostShowReservationPage(w http.ResponseWriter, r *http
 
 	pathSegments := strings.Split(r.RequestURI, "/")
 
-	id, err := strconv.Atoi(pathSegments[len(pathSegments)-1])
+	id, err := strconv.Atoi(pathSegments[2])
 	if err != nil {
 		helpers.ServerError(w, err)
 		m.App.Session.Put(r.Context(), "error", "Invalid reservation ID")
@@ -594,7 +598,7 @@ func (m *Repository) AdminPostShowReservationPage(w http.ResponseWriter, r *http
 		return
 	}
 
-	src := pathSegments[len(pathSegments)-2]
+	src := pathSegments[3]
 	stringMap:= make(map[string]string)
 	stringMap["src"] = src
 
