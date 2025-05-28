@@ -1,12 +1,254 @@
 {{template "base" .}}
 
 {{define "content"}}
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1>This is the about page</h1>
-
+    <div class="about-container py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="about-card">
+                        <div class="about-header">
+                            <h1><i class="fas fa-info-circle me-3"></i>About Us</h1>
+                        </div>
+                        <div class="about-body p-4 p-md-5">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="feature-box">
+                                        <div class="feature-icon">
+                                            <i class="fas fa-home"></i>
+                                        </div>
+                                        <h3>Premium Accommodations</h3>
+                                        <p>Experience luxury and comfort in our carefully curated selection of rooms and suites, designed to make your stay unforgettable.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="feature-box">
+                                        <div class="feature-icon">
+                                            <i class="fas fa-concierge-bell"></i>
+                                        </div>
+                                        <h3>Exceptional Service</h3>
+                                        <p>Our dedicated team is committed to providing personalized service that exceeds your expectations, available 24/7 for your convenience.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="feature-box">
+                                        <div class="feature-icon">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <h3>Prime Location</h3>
+                                        <p>Strategically located in the heart of the city, offering easy access to major attractions, business districts, and entertainment venues.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="feature-box">
+                                        <div class="feature-icon">
+                                            <i class="fas fa-award"></i>
+                                        </div>
+                                        <h3>Award Winning</h3>
+                                        <p>Recognized for excellence in hospitality, we've earned numerous awards for our outstanding service and guest satisfaction.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mission-section mt-5">
+                                <div class="section-divider"></div>
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h2 class="mb-3">Our Mission</h2>
+                                        <p class="lead">To provide exceptional hospitality experiences that create lasting memories for our guests while maintaining the highest standards of comfort, service, and elegance.</p>
+                                        <p>We believe that every stay should be more than just accommodation – it should be an experience that enriches your journey and exceeds your expectations.</p>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <div class="mission-icon">
+                                            <i class="fas fa-heart"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="about-footer">
+                            <i class="fas fa-handshake me-2"></i>We look forward to welcoming you and making your stay extraordinary
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+{{end}}
+
+{{define "js"}}
+<style>
+    .about-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9eef2 100%);
+        min-height: 85vh;
+        padding: 2rem 0;
+    }
+    
+    .about-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .about-card:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .about-header {
+        background: linear-gradient(135deg, #3a7bd5 0%, #1e50a2 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .about-header h1 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 2.5rem;
+    }
+    
+    .feature-box {
+        text-align: center;
+        padding: 2rem 1rem;
+        height: 100%;
+        transition: all 0.3s ease;
+        border-radius: 10px;
+    }
+    
+    .feature-box:hover {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        transform: translateY(-5px);
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1.5rem;
+        background: linear-gradient(135deg, #3a7bd5 0%, #1e50a2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+    }
+    
+    .feature-box h3 {
+        color: #1e50a2;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-box p {
+        color: #6c757d;
+        line-height: 1.6;
+    }
+    
+    .mission-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        padding: 3rem 2rem;
+    }
+    
+    .section-divider {
+        height: 3px;
+        background: linear-gradient(135deg, #3a7bd5 0%, #1e50a2 100%);
+        border-radius: 5px;
+        margin-bottom: 2rem;
+        width: 100px;
+    }
+    
+    .mission-section h2 {
+        color: #1e50a2;
+        font-weight: 600;
+    }
+    
+    .mission-section .lead {
+        color: #495057;
+        font-weight: 500;
+    }
+    
+    .mission-section p {
+        color: #6c757d;
+        line-height: 1.7;
+    }
+    
+    .mission-icon {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, #3a7bd5 0%, #1e50a2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3rem;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(58, 123, 213, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(58, 123, 213, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(58, 123, 213, 0);
+        }
+    }
+    
+    .about-footer {
+        background: #f8f9fa;
+        color: #6c757d;
+        padding: 1.5rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    @media (max-width: 768px) {
+        .about-header h1 {
+            font-size: 2rem;
+        }
+        
+        .mission-section {
+            padding: 2rem 1rem;
+        }
+        
+        .feature-box {
+            margin-bottom: 2rem;
+        }
+    }
+</style>
+
+<script>
+    // Add smooth scroll animation for feature boxes
+    document.addEventListener('DOMContentLoaded', function() {
+        const featureBoxes = document.querySelectorAll('.feature-box');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 200);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        featureBoxes.forEach((box) => {
+            box.style.opacity = '0';
+            box.style.transform = 'translateY(20px)';
+            box.style.transition = 'all 0.6s ease';
+            observer.observe(box);
+        });
+    });
+</script>
 {{end}}
