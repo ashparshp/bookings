@@ -106,7 +106,14 @@
                 <div class="d-flex justify-content-between mt-3">
                     <div>
                         <input type="submit" class="btn btn-primary text-white" value="Save">
-                        <a href="/admin/reservations-{{$src}}" class="btn btn-warning text-white">Cancel</a>
+
+                        {{if eq $src "cal"}}
+                            <a href="#!" class="btn btn-secondary text-white" onclick="window.history.back()">Back</a>
+                        {{else}}
+                            <a href="/admin/reservations-{{$src}}" class="btn btn-warning text-white">Cancel</a>
+                        {{end}}
+
+
                         {{if eq $res.Processed 0}}
                             <a href="#!" class="btn btn-info text-white" onclick="processRes({{$res.ID}})">Mark as Processed</a>
                         {{end}}
