@@ -34,6 +34,10 @@
                     </div>
                     <div class="card-body">
                         <!-- Calendar content will go here -->
+                        <form method="post" action="/admin/reservations-calendar">
+                            <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                            <input type="hidden" name="m" value="{{index .StringMap "this_month"}}">
+                            <input type="hidden" name="y" value="{{index .StringMap "this_month_year"}}">
                         <div class="table-responsive">
                             {{range $rooms}}
                             {{$roomID := .ID}}
@@ -78,6 +82,9 @@
                             {{end}}
 
                         </div>
+
+                            <input type="submit" class="btn btn-primary float-end" value="Save Calendar">
+                        </form>
                     </div>
                 </div>
             </div>
