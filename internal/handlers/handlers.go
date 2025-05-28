@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -757,4 +758,72 @@ func (m *Repository) AdminDeleteReservationPage(w http.ResponseWriter, r *http.R
 	m.App.Session.Put(r.Context(), "flash", "Reservation deleted!")
 
 	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+}
+
+// AdminPostReservationCalendarPage handles the post request for the admin reservation calendar
+func (m *Repository) AdminPostReservationCalendarPage(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	year, _ := strconv.Atoi(r.Form.Get("y"))
+	month, _ := strconv.Atoi(r.Form.Get("m"))
+
+	// process blocks
+	rooms, err := m.DB.AllRooms()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	forms := forms.New(r.PostForm)
+
+	for _, room := range rooms {
+		curMap := m.App.Session.Get(r.Context(), fmt.Sprintf("block_map_%d", room.ID)).(map[string]int)
+		for name, value := range curMap {
+			if val, ok := curMap[name]; ok {
+				if val > 0 {
+					if !forms.Has(fmt.Sprintf("remove_block_%d_%s", room.ID, name)) {
+						// delete the restriction by id
+						log.Println(value)
+					}
+				}
+			}
+		}
+	}
+
+	// now handle new blocks
+	for name, _ := range r.PostForm {
+		if strings.HasPrefix(name, "add_block_") {
+			parts := strings.Split(name, "_")
+
+			roomID, err := strconv.Atoi(parts[2])
+			if err != nil {
+				m.App.Session.Put(r.Context(), "error", "Invalid room ID")
+				http.Redirect(w, r, "/admin/reservations-calendar", http.StatusSeeOther)
+				return
+			}
+
+			dateStr := parts[3]
+			layout := "2006-01-02"
+			blockDate, err := time.Parse(layout, dateStr)
+			if err != nil {
+				m.App.Session.Put(r.Context(), "error", "Invalid date format")
+				http.Redirect(w, r, "/admin/reservations-calendar", http.StatusSeeOther)
+				return
+			}
+
+			err = m.DB.InsertBlockForRoom(roomID, blockDate)
+			if err != nil {
+				m.App.Session.Put(r.Context(), "error", "Unable to insert block")
+				http.Redirect(w, r, "/admin/reservations-calendar", http.StatusSeeOther)
+				return
+			}
+		}
+	}
+
+	m.App.Session.Put(r.Context(), "flash", "Calendar updated")
+	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-calendar?y=%d&m=%d", year, month), http.StatusSeeOther)
 }
