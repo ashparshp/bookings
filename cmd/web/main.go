@@ -9,17 +9,16 @@ import (
 	"os"
 	"time"
 
+	"github.com/ashparshp/bookings/internal/config"
 	"github.com/ashparshp/bookings/internal/driver"
 	"github.com/ashparshp/bookings/internal/handlers"
 	"github.com/ashparshp/bookings/internal/helpers"
 	"github.com/ashparshp/bookings/internal/models"
 	"github.com/ashparshp/bookings/internal/render"
 
-	"github.com/ashparshp/bookings/internal/config"
-
 	"github.com/alexedwards/scs/v2"
 )
-const portNumber = ":8080"
+
 var app config.AppConfig
 var session *scs.SessionManager
 var infoLog *log.Logger
@@ -31,27 +30,16 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.SQL.Close()
-
 	defer close(app.MailChan)
 
 	fmt.Println("Starting mail listener...")
 	listenForMail()
 
-	/*
-	http.HandleFunc("/", handlers.Repo.HomePage)
-	http.HandleFunc("/about", handlers.Repo.AboutPage)
-	*/
-	
+	portNumber := getPort()
 	fmt.Println("Server running on port", portNumber)
-	/*
-	err = http.ListenAndServe(portNumber, nil)
-	if err != nil {
-		fmt.Println("Error starting server:", err)
-	}
-	*/
 
 	srv := &http.Server{
-		Addr: portNumber,
+		Addr:    portNumber,
 		Handler: routes(&app),
 	}
 
@@ -60,22 +48,22 @@ func main() {
 }
 
 func run() (*driver.DB, error) {
-	// what am I going to put in the session
+	// Register custom session data types
 	gob.Register(models.Reservation{})
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
 	gob.Register(models.Restriction{})
 	gob.Register(map[string]int{})
 
-	// read flags
+	// Read flags
 	inProduction := flag.Bool("production", true, "Run in production mode")
-	useCache := flag.Bool("cache", true, "Use cache for templates")
+	useCache := flag.Bool("cache", true, "Use template caching")
 	dbHost := flag.String("dbhost", "localhost", "Database host")
 	dbName := flag.String("dbname", "", "Database name")
 	dbUser := flag.String("dbuser", "", "Database user")
 	dbPassword := flag.String("dbpassword", "", "Database password")
 	dbPort := flag.String("dbport", "5432", "Database port")
-	dbSSL := flag.String("dbssl", "disable", "Database SSL settings (disable, prefer, require)")
+	dbSSL := flag.String("dbssl", "disable", "Database SSL setting (disable, prefer, require)")
 
 	flag.Parse()
 
@@ -87,7 +75,6 @@ func run() (*driver.DB, error) {
 	mailChan := make(chan models.MailData)
 	app.MailChan = mailChan
 
-	// change this to true when in production
 	app.InProduction = *inProduction
 	app.UseCahce = *useCache
 
@@ -104,29 +91,38 @@ func run() (*driver.DB, error) {
 	session.Cookie.Secure = app.InProduction
 	app.Session = session
 
-	// connect to database
+	// Database connection
 	log.Println("Connecting to database...")
-	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s",
-		*dbHost, *dbPort, *dbName, *dbUser, *dbPassword, *dbSSL)
+	connectionString := fmt.Sprintf(
+		"host=%s port=%s dbname=%s user=%s password=%s sslmode=%s",
+		*dbHost, *dbPort, *dbName, *dbUser, *dbPassword, *dbSSL,
+	)
+
 	db, err := driver.ConnectSQL(connectionString)
 	if err != nil {
-		log.Fatal("Cannot connect to database")
+		log.Fatal("Cannot connect to database:", err)
 	}
 	log.Println("Connected to database")
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
-		log.Fatal("Cannot create template cache")
+		log.Fatal("Cannot create template cache:", err)
 		return nil, err
 	}
-
 	app.TemplateCache = tc
 
 	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandler(repo)
-
 	render.NewRenderer(&app)
 	helpers.NewHelpers(&app)
 
 	return db, nil
+}
+
+func getPort() string {
+	port := os.Getenv("PORT")
+	if port == "" {
+		return ":8080"
+	}
+	return ":" + port
 }

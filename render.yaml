@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: bookings-app
+    env: go
+    buildCommand: go build -o bookings cmd/web/*.go
+    startCommand: ./bookings -dbname=bookings -dbuser=ashparsh -cache=false -production=true
+    envVars:
+      - key: PORT
+        value: 8080
