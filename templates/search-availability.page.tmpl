@@ -1,46 +1,48 @@
 {{template "base" .}}
 
 {{define "content"}}
-    <div class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h2 class="my-2"><i class="fas fa-calendar-alt me-2"></i>Search for Availability</h2>
-                    </div>
-                    <div class="card-body p-4">
-                        <form action="/search-availability" method="post" novalidate class="needs-validation">
-                            <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-                            
-                            <div class="mb-4">
-                                <label for="reservation-dates" class="form-label fw-bold">Select your dates</label>
-                                <div class="row" id="reservation-dates">
-                                    <div class="col-md-6 mb-3 mb-md-0">
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-calendar-check"></i></span>
-                                            <input required class="form-control" type="text" name="start" placeholder="Arrival date" autocomplete="off">
+    <div class="availability-container py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="search-card">
+                        <div class="search-header">
+                            <h2><i class="fas fa-calendar-alt me-3"></i>Find Your Perfect Stay</h2>
+                        </div>
+                        <div class="search-body p-4 p-md-5">
+                            <form action="/search-availability" method="post" novalidate class="needs-validation">
+                                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                                
+                                <div class="mb-4">
+                                    <label for="reservation-dates" class="form-label fw-bold fs-5">When would you like to stay?</label>
+                                    <div class="row g-3" id="reservation-dates">
+                                        <div class="col-md-6">
+                                            <div class="date-input">
+                                                <span class="icon"><i class="fas fa-calendar-check"></i></span>
+                                                <input required class="form-control" type="text" name="start" placeholder="Arrival date" autocomplete="off">
+                                            </div>
+                                            <div class="invalid-feedback">Please select an arrival date</div>
                                         </div>
-                                        <div class="invalid-feedback">Please select an arrival date</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-calendar-minus"></i></span>
-                                            <input required class="form-control" type="text" name="end" placeholder="Departure date" autocomplete="off">
+                                        <div class="col-md-6">
+                                            <div class="date-input">
+                                                <span class="icon"><i class="fas fa-calendar-minus"></i></span>
+                                                <input required class="form-control" type="text" name="end" placeholder="Departure date" autocomplete="off">
+                                            </div>
+                                            <div class="invalid-feedback">Please select a departure date</div>
                                         </div>
-                                        <div class="invalid-feedback">Please select a departure date</div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg" id="search-button">
-                                    <i class="fas fa-search me-1"></i> Check Availability
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="card-footer text-muted text-center">
-                        <small>Find your perfect stay with our real-time availability search</small>
+                                <div class="d-grid gap-2 mt-4">
+                                    <button type="submit" class="search-button" id="search-button">
+                                        <i class="fas fa-search me-2"></i> Check Availability
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="search-footer">
+                            <i class="fas fa-info-circle me-2"></i>Real-time availability checking for your convenience
+                        </div>
                     </div>
                 </div>
             </div>
@@ -49,15 +51,101 @@
 {{end}}
 
 {{define "js"}}
+<style>
+    .availability-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9eef2 100%);
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+    }
+    
+    .search-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .search-card:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+    }
+    
+    .search-header {
+        background: linear-gradient(135deg, #3a7bd5 0%, #1e50a2 100%);
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    
+    .search-header h2 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.75rem;
+    }
+    
+    .date-input {
+        position: relative;
+        margin-bottom: 0.5rem;
+    }
+    
+    .date-input .icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #3a7bd5;
+        z-index: 10;
+    }
+    
+    .date-input input {
+        border-radius: 30px;
+        padding-left: 45px;
+        height: 50px;
+        font-size: 1rem;
+        border: 2px solid #e1e5eb;
+        transition: all 0.3s ease;
+    }
+    
+    .date-input input:focus {
+        border-color: #3a7bd5;
+        box-shadow: 0 0 0 0.25rem rgba(58, 123, 213, 0.25);
+    }
+    
+    .search-button {
+        background: linear-gradient(135deg, #3a7bd5 0%, #1e50a2 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .search-button:hover {
+        background: linear-gradient(135deg, #1e50a2 0%, #0a2f73 100%);
+        transform: translateY(-2px);
+    }
+    
+    .search-footer {
+        background: #f8f9fa;
+        color: #6c757d;
+        padding: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+</style>
+
 <script>
-    // Date range picker initialization
     const elem = document.getElementById('reservation-dates');
     const rangePicker = new DateRangePicker(elem, {
         format: "yyyy-mm-dd",
         minDate: new Date(),
     });
     
-    // Form validation
     (function() {
         'use strict';
         const form = document.querySelector('.needs-validation');
