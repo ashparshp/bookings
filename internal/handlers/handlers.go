@@ -693,7 +693,7 @@ func (m *Repository) AdminReservationCalendarPage(w http.ResponseWriter, r *http
 					reservationMap[d.Format("2006-01-02")] = restriction.ReservationID
 				}
 			} else {
-				blockMap[restriction.StartDate.Format("2006-01-02")] = restriction.RestrictionID
+				blockMap[restriction.StartDate.Format("2006-01-02")] = restriction.ID
 			}
 		}
 
