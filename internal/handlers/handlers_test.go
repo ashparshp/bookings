@@ -239,8 +239,8 @@ func TestRepository_PostReservation(t *testing.T) {
     handler = http.HandlerFunc(Repo.PostReservationPage)
     handler.ServeHTTP(rr, req)
 
-    if rr.Code != http.StatusOK {
-        t.Errorf("PostReservationPage handler returned wrong status code for invalid form: got %d, wanted %d", rr.Code, http.StatusOK)
+    if rr.Code != http.StatusSeeOther {
+        t.Errorf("PostReservationPage handler returned wrong status code for invalid form: got %d, wanted %d", rr.Code, http.StatusSeeOther)
     }
 }
 
