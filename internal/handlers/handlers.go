@@ -534,7 +534,7 @@ func (m *Repository) AdminAllReservationsPage(w http.ResponseWriter, r *http.Req
 func (m *Repository) AdminShowReservationPage(w http.ResponseWriter, r *http.Request) {
 	pathSegments := strings.Split(r.RequestURI, "/")
 
-	id, err := strconv.Atoi(pathSegments[2])
+	id, err := strconv.Atoi(pathSegments[4])
 	if err != nil {
 		helpers.ServerError(w, err)
 		m.App.Session.Put(r.Context(), "error", "Invalid reservation ID")
