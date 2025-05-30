@@ -18,11 +18,23 @@ if [ "$1" = "dev" ] || [ -z "$1" ]; then
 fi
 
 if [ "$1" = "prod" ]; then
+    # Load environment variables from .env file if it exists
+    if [ -f .env ]; then
+        source .env
+    fi
+
+    # Check for required environment variables
+    if [ -z "$DB_PASSWORD" ] || [ -z "$MAIL_PASSWORD" ] || [ -z "$MAIL_USERNAME" ]; then
+        echo "Error: Required environment variables not set."
+        echo "Please set DB_PASSWORD, MAIL_USERNAME, and MAIL_PASSWORD in a .env file or export them."
+        exit 1
+    fi
+
     echo "Starting in production mode..."
     go run $(find cmd/web -name "*.go" -not -name "*_test.go") \
         -dbname=bookings_db_8szz \
         -dbuser=bookings_db_8szz_user \
-        -dbpassword=20iNeVoaJgHVGEcnLHCxhbWNMlOlVvye \
+        -dbpassword="$DB_PASSWORD" \
         -dbhost=dpg-d0rhah15pdvs73e0csr0-a.singapore-postgres.render.com \
         -dbport=5432 \
         -dbssl=require \
@@ -30,8 +42,8 @@ if [ "$1" = "prod" ]; then
         -cache=true \
         -mailhost=smtp.gmail.com \
         -mailport=587 \
-        -mailusername=ashparshp1@gmail.com \
-        -mailpassword=nthugvfxhsqgtizw \
+        -mailusername="$MAIL_USERNAME" \
+        -mailpassword="$MAIL_PASSWORD" \
         -mailencryption=starttls \
         -mailfrom=noreply@bookings.com \
         -mailfromname="bookings"
