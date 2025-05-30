@@ -25,6 +25,10 @@ func routes(_ *config.AppConfig) http.Handler {
 	mux.Use(NoSurf)
 	mux.Use(SessionLoad)
 
+	mux.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("OK"))
+	})
+
 	mux.Get("/", handlers.Repo.HomePage)
 	mux.Get("/about", handlers.Repo.AboutPage)
 	mux.Get("/generals-quarters", handlers.Repo.GeneralsPage)
