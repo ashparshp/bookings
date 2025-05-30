@@ -20,16 +20,19 @@ fi
 if [ "$1" = "prod" ]; then
     echo "Starting in production mode..."
     go run $(find cmd/web -name "*.go" -not -name "*_test.go") \
-        -dbname=bookings \
-        -dbuser=ashparsh \
-        -dbpassword=postgres \
+        -dbname=bookings_db_8szz \
+        -dbuser=bookings_db_8szz_user \
+        -dbpassword=20iNeVoaJgHVGEcnLHCxhbWNMlOlVvye \
+        -dbhost=dpg-d0rhah15pdvs73e0csr0-a.singapore-postgres.render.com \
+        -dbport=5432 \
+        -dbssl=require \
         -production=true \
         -cache=true \
         -mailhost=smtp.gmail.com \
         -mailport=587 \
         -mailusername=ashparshp1@gmail.com \
         -mailpassword=nthugvfxhsqgtizw \
-         -mailencryption=starttls \
+        -mailencryption=starttls \
         -mailfrom=noreply@bookings.com \
         -mailfromname="bookings"
 fi
