@@ -3,7 +3,19 @@ services:
     name: bookings-app
     env: go
     buildCommand: go build -o bookings cmd/web/*.go
-    startCommand: ./bookings -dbname=bookings -dbuser=ashparsh -cache=false -production=true
+    startCommand: ./bookings -dbname=bookings_db_8szz -dbuser=bookings_db_8szz_user -dbpassword=$DB_PASSWORD -dbhost=$DB_HOST -dbport=5432 -dbssl=require -cache=true -production=true -mailhost=smtp.gmail.com -mailport=465 -mailusername=$MAIL_USERNAME -mailpassword=$MAIL_PASSWORD -mailencryption=ssl -mailfrom=$MAIL_FROM_ADDRESS -mailfromname=$MAIL_FROM_NAME
     envVars:
       - key: PORT
         value: 8080
+      - key: DB_PASSWORD
+        value: 20iNeVoaJgHVGEcnLHCxhbWNMlOlVvye
+      - key: DB_HOST
+        value: dpg-d0rhah15pdvs73e0csr0-a.singapore-postgres.render.com
+      - key: MAIL_USERNAME
+        value: ashparsh63@gmail.com
+      - key: MAIL_PASSWORD
+        value: hjjchrpmplohiklb
+      - key: MAIL_FROM_ADDRESS
+        value: noreply@bookings.com
+      - key: MAIL_FROM_NAME
+        value: CoCreate

@@ -65,6 +65,15 @@ func run() (*driver.DB, error) {
 	dbPort := flag.String("dbport", "5432", "Database port")
 	dbSSL := flag.String("dbssl", "disable", "Database SSL setting (disable, prefer, require)")
 
+	// Email configuration flags
+    mailHost := flag.String("mailhost", "localhost", "SMTP host")
+    mailPort := flag.Int("mailport", 1025, "SMTP port")
+    mailUsername := flag.String("mailusername", "", "SMTP username")
+    mailPassword := flag.String("mailpassword", "", "SMTP password")
+    mailEncryption := flag.String("mailencryption", "none", "SMTP encryption (none, tls, ssl)")
+    mailFromAddress := flag.String("mailfrom", "noreply@bookings.com", "Mail from address")
+    mailFromName := flag.String("mailfromname", "Bookings", "Mail from name")
+
 	flag.Parse()
 
 	if *dbName == "" || *dbUser == "" {
@@ -74,6 +83,17 @@ func run() (*driver.DB, error) {
 
 	mailChan := make(chan models.MailData)
 	app.MailChan = mailChan
+
+	// Store email config in app
+    app.MailConfig = config.MailConfig{
+        Host:       *mailHost,
+        Port:       *mailPort,
+        Username:   *mailUsername,
+        Password:   *mailPassword,
+        Encryption: *mailEncryption,
+        FromAddress: *mailFromAddress,
+        FromName:   *mailFromName,
+    }
 
 	app.InProduction = *inProduction
 	app.UseCahce = *useCache

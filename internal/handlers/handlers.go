@@ -211,33 +211,33 @@ func (m *Repository) PostReservationPage (w http.ResponseWriter, r *http.Request
 
 
 	msg := models.MailData{
-		To:     reservation.Email,
-		From:    "me@here.com",
-		Subject: "Reservation Confirmation",
-		Content: htmlMessage,
-		Template: "basic.html",
-	}
+        To:      reservation.Email,
+        From:    m.App.MailConfig.FromAddress,
+        Subject: "Reservation Confirmation",
+        Content: htmlMessage,
+        Template: "basic.html",
+    }
 
 	m.App.MailChan <- msg
 
 	// send an email to the admin
 	adminMessage := fmt.Sprintf(`
-	<strong>New Reservation</strong><br>
-	New reservation for %s %s from %s to %s.<br>
-	Email: %s<br>
-	Phone: %s<br>
-	Room ID: %d<br>
-	`, reservation.FirstName, reservation.LastName, reservation.StartDate.Format("2006-01-02"), reservation.EndDate.Format("2006-01-02"), reservation.Email, reservation.Phone, reservation.RoomID)
-	
-	adminMsg := models.MailData{
-		To:     "me@here.com",
-		From:    "me@here.com",
-		Subject: "New Reservation",
-		Content: adminMessage,
-		Template: "basic.html",
-	}
-	
-	m.App.MailChan <- adminMsg
+    <strong>New Reservation</strong><br>
+    New reservation for %s %s from %s to %s.<br>
+    Email: %s<br>
+    Phone: %s<br>
+    Room ID: %d<br>
+    `, reservation.FirstName, reservation.LastName, reservation.StartDate.Format("2006-01-02"), reservation.EndDate.Format("2006-01-02"), reservation.Email, reservation.Phone, reservation.RoomID)
+    
+    adminMsg := models.MailData{
+        To:      "ashparshp1@gmail.com",
+        From:    m.App.MailConfig.FromAddress,
+        Subject: "New Reservation",
+        Content: adminMessage,
+        Template: "basic.html",
+    }
+
+    m.App.MailChan <- adminMsg
 
 
 	m.App.Session.Put(r.Context(), "reservation", reservation)
